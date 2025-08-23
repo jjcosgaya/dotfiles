@@ -28,7 +28,7 @@ import os
     #lazy.reload()
 #load_colors(cache)
 
-colors = ["#45475a", "#f38ba8", "#a6e3a1", "#f9e2af", "#89b4fa", "#f5c2e7", "#94e2d5", "#bac2de", "#1e1e2e", "#ffffff"]
+colors = ["#45475a", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#dcd7ba", "#121712", "#ffffff"]
 
 border_color = '#bfbfbf'
 border_unfocused_color = '#252525'
@@ -321,6 +321,6 @@ wmname = "LG3D"
 @hook.subscribe.startup_once
 def autostart():
     subprocess.call(['setxkbmap', 'es'])
-    # subprocess.run('~/.fehbg  && picom &', shell=True)
+    subprocess.run('~/.fehbg  && picom &', shell=True)
     # subprocess.run('redshift -l 60.192059:24.945831 &', shell=True)
     # subprocess.run('/home/jota/.screenlayout/home_screenlayout.sh')
