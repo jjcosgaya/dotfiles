@@ -242,12 +242,12 @@ screens = [
                 #     update_interval = 0.01,
                 #     func = lambda: subprocess.check_output('/home/jota/.scripts/volume.sh').decode('utf-8').strip(),
                 #     background = bar_background),
-                # widget.GenPollText(
-                #     name = 'baraction',
-                #     fmt = '{}',
-                #     update_interval = 5,
-                #     func = lambda: subprocess.check_output('/home/jota/.scripts/battery.sh').decode('utf-8').strip(),
-                #     background = bar_background),
+                widget.GenPollText(
+                    name = 'baraction',
+                    fmt = '{}',
+                    update_interval = 5,
+                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/battery.sh').decode('utf-8').strip(),
+                    background = bar_background),
                 widget.TextBox("|", foreground=colors[2], background = bar_background),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
