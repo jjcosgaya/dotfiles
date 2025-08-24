@@ -14,5 +14,10 @@ else
     	   volume="󰖁 $volume_value"
 fi
 
+mic=""
+if [ "$(pamixer --default-source --get-mute)" = true ]; then
+	mic="󰍭 "
+fi
+
 ### PRINT ###
-printf "%s\n" "$volume"
+printf "%s\n" "$mic$volume"

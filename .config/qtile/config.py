@@ -58,6 +58,7 @@ screenshot      = "flameshot gui"
 volume_up       = "pamixer -i 3"
 volume_down     = "pamixer -d 3"
 mute            = "pamixer -t"
+mute_mic        = "pamixer --default-source -t"
 brightness_up   = "brillo -A 5"
 brightness_down = "brillo -U 5"
 
@@ -102,6 +103,7 @@ keys = [
     Key([], "xf86audioraisevolume", lazy.spawn(volume_up), desc="Increase volume"),
     Key([], "xf86audiolowervolume", lazy.spawn(volume_down), desc="Decrease volume"),
     Key([], "xf86audiomute", lazy.spawn(mute), desc="Mute volume"),
+    Key([], "xf86audiomicmute", lazy.spawn(mute_mic), desc="Mute microphone"),
 
 
     Key([], "xf86monbrightnessup", lazy.spawn(brightness_up), desc="Increase brightness"),
