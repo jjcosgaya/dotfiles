@@ -10,6 +10,7 @@ from libqtile.lazy import lazy
 from libqtile import hook
 import subprocess
 import os
+import logging
 
 
 #           _
@@ -54,11 +55,11 @@ menu            = "rofi -show drun"
 # rofipdf         = "./.scripts/rofi_pdf.sh"
 screenshot      = "flameshot gui"
 
-# volume_up       = "pamixer -i 3"
-# volume_down     = "pamixer -d 3"
-# mute            = "pamixer -t"
-# brightness_up   = "brillo -A 5"
-# brightness_down = "brillo -U 5"
+volume_up       = "pamixer -i 3"
+volume_down     = "pamixer -d 3"
+mute            = "pamixer -t"
+brightness_up   = "brillo -A 5"
+brightness_down = "brillo -U 5"
 
 # speech_to_text  = "./.scripts/speech_to_txt.sh"
 
@@ -98,13 +99,13 @@ keys = [
     # --------------------------------------------------------------------------------------------
     # VOLUME AND BRIGHTNESS
     # --------------------------------------------------------------------------------------------
-    # Key([], "xf86audioraisevolume", lazy.spawn(volume_up), desc="Increase volume"),
-    # Key([], "xf86audiolowervolume", lazy.spawn(volume_down), desc="Decrease volume"),
-    # Key([], "xf86audiomute", lazy.spawn(mute), desc="Mute volume"),
+    Key([], "xf86audioraisevolume", lazy.spawn(volume_up), desc="Increase volume"),
+    Key([], "xf86audiolowervolume", lazy.spawn(volume_down), desc="Decrease volume"),
+    Key([], "xf86audiomute", lazy.spawn(mute), desc="Mute volume"),
 
 
-    # Key([], "xf86monbrightnessup", lazy.spawn(brightness_up), desc="Increase brightness"),
-    # Key([], "xf86monbrightnessdown", lazy.spawn(brightness_down), desc="Decrease brightness"),
+    Key([], "xf86monbrightnessup", lazy.spawn(brightness_up), desc="Increase brightness"),
+    Key([], "xf86monbrightnessdown", lazy.spawn(brightness_down), desc="Decrease brightness"),
 
     # --------------------------------------------------------------------------------------------
     # WINDOWS
@@ -230,18 +231,18 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                # widget.GenPollText(
-                #     name = 'baraction',
-                #     fmt = '{}',
-                #     update_interval = 0.01,
-                #     func = lambda: subprocess.check_output('/home/jota/.scripts/brightness.sh').decode('utf-8').strip(),
-                #     background = bar_background),
-                # widget.GenPollText(
-                #     name = 'baraction',
-                #     fmt = '{}',
-                #     update_interval = 0.01,
-                #     func = lambda: subprocess.check_output('/home/jota/.scripts/volume.sh').decode('utf-8').strip(),
-                #     background = bar_background),
+                widget.GenPollText(
+                    name = 'baraction',
+                    fmt = '{}',
+                    update_interval = 0.01,
+                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/brightness.sh').decode('utf-8').strip(),
+                    background = bar_background),
+                widget.GenPollText(
+                    name = 'baraction',
+                    fmt = '{}',
+                    update_interval = 0.01,
+                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/volume.sh').decode('utf-8').strip(),
+                    background = bar_background),
                 widget.GenPollText(
                     name = 'baraction',
                     fmt = '{}',
@@ -322,5 +323,10 @@ wmname = "LG3D"
 def autostart():
     subprocess.call(['setxkbmap', 'es'])
     subprocess.run('~/.fehbg  && picom &', shell=True)
+    try:
+        subprocess.Popen(['pipewire'])
+        logging.debug(f"Started {process}")
+    except Exception as e:
+        logging.error(f"Failed to start {process}: {e}")
     # subprocess.run('redshift -l 60.192059:24.945831 &', shell=True)
     # subprocess.run('/home/jota/.screenlayout/home_screenlayout.sh')
