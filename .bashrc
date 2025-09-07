@@ -13,13 +13,17 @@ HISTSIZE=1000
 HISTFILESIZE=1000
 PROMPT_COMMAND='history -a; history -r' # After every command append to the history file and reload the history.
 
-
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fcd='dir=$(fd . ~ --no-ignore --type d 2>/dev/null | fzf) && cd "$dir"'
 
-# set -o vi
+set -o vi
 
+# Prefix based history search
+bind -m vi-command '"k": history-search-backward'
+bind -m vi-command '"j": history-search-forward'
+bind -m vi-insert '"\e[A": history-search-backward'
+bind -m vi-insert '"\e[B": history-search-forward'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
