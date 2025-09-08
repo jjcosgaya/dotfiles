@@ -11,7 +11,18 @@ PS1='\[\e[36m\]\u\[\e[0m\] \[\e[37m\]{  \w }\[\e[0m\] $(if [ $? -eq 0 ]; then
 HISTCONTROL=ignorespace:erasedups
 HISTSIZE=1000
 HISTFILESIZE=1000
-PROMPT_COMMAND='history -a; history -r' # After every command append to the history file and reload the history.
+PROMPT_COMMAND="deduplicate_history" # This runs after every command entered in the terminal
+deduplicate_history() {
+  # Append last command to bash_history
+  history -a
+
+  # Remove duplicates from bash_history
+  tac ~/.bash_history | awk '!seen[$0]++' | tac > /tmp/bashis.tmp && mv /tmp/bashis.tmp ~/.bash_history
+
+  # Reload session bash history (clear and read from file)
+  history -c
+  history -r
+}
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
