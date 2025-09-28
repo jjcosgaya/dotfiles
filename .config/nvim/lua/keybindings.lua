@@ -31,10 +31,13 @@ wk.add({
 })
 
 -- ────────────────────────────────────────────────
--- Buffer Navigation
+-- Buffer & Window Navigation
 -- ────────────────────────────────────────────────
-vim.keymap.set('n', '<C-k>', ':bn<CR>', { noremap = true, silent = true, desc = 'Next buffer' })
-vim.keymap.set('n', '<C-j>', ':bp<CR>', { noremap = true, silent = true, desc = 'Previous buffer' })
+-- Move between windows
+vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true, desc = 'Left' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true, desc = 'Down' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true, desc = 'Up' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true, desc = 'Right' })
 
 -- Close Current Buffer
 vim.keymap.set('n', '<leader>cb', ':bd<CR>', { noremap = true, silent = true, desc = 'Close current buffer' })
@@ -71,6 +74,25 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "q", ":lua CloseNetrwAndReturn()<cr>", { noremap = true, buffer = true, silent = true, nowait = true, desc = "Close file explorer" })
     vim.bo.buflisted = false -- Make netrw buffer not listed
   end
+})
+
+-- ────────────────────────────────────────────────
+-- Terminal
+-- ────────────────────────────────────────────────
+vim.keymap.set('t', '<Esc><Esc>', [[<C-\><C-n>]], { noremap = true, desc = "Back to terminal normal mode" })
+vim.keymap.set('n', '<leader>tn', ":term<cr>", { noremap = true, desc = "New terminal"})
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    -- Send commands with enter from normal mode
+    vim.keymap.set('n', '<cr>', [[i<Cr><C-\><C-n>]], { noremap = true, buffer = true, desc = "Execute command" })
+    -- Create new terminals on splits
+    vim.keymap.set('n', '<C-w>v', ':vsplit | term<cr>', { noremap = true, buffer = true, desc = "Execute command" })
+    vim.keymap.set('n', '<C-w>s', ':split | term<cr>', { noremap = true, buffer = true, desc = "Execute command" })
+    -- Send arrows with S-j and S-k
+    vim.keymap.set('n', 'J', [[i<Down><C-\><C-n>]], { noremap = true })
+    vim.keymap.set('n', 'K', [[i<Up><C-\><C-n>]], { noremap = true })
+  end,
 })
 
 -- ────────────────────────────────────────────────

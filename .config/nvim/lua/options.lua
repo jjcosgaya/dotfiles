@@ -81,6 +81,21 @@ vim.opt_local.foldcolumn = '1'
 vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = 'n'           -- Conceal under cursor in normal mode
 
+
+-- ────────────────────────────────────────────────
+-- Terminal
+-- ────────────────────────────────────────────────
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.opt_local.number = true               -- Show line numbers
+    vim.opt_local.relativenumber = true       -- Show relative line numbers
+    vim.opt_local.cursorline = true           -- Highlight current line
+    vim.opt_local.scrollback = 100000          -- Scrollback buffer size
+    vim.opt_local.laststatus = 0
+  end,
+})
+
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- EDITING BEHAVIOR (Settings that modify how text editing works)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
