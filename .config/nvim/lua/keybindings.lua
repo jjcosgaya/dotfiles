@@ -100,8 +100,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.keymap.set('n', '<C-w>v', ':vsplit | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Execute command" })
     vim.keymap.set('n', '<C-w>s', ':split | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Execute command" })
     -- Send arrows with S-j and S-k
-    vim.keymap.set('n', 'J', [[i<Down><C-\><C-n>]], { noremap = true, silent = true })
-    vim.keymap.set('n', 'K', [[i<Up><C-\><C-n>]], { noremap = true, silent = true })
+    vim.keymap.set('n', 'J', [[i<Down><C-\><C-n>]], { noremap = true, silent = true, buffer = true })
+    vim.keymap.set('n', 'K', [[i<Up><C-\><C-n>]], { noremap = true, silent = true, buffer = true })
   end,
 })
 
