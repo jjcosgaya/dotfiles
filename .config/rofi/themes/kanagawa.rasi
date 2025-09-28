@@ -1,0 +1,43 @@
+/** Kanagawa Theme for Rofi
+ *  Inspired by the colors of the famous painting by Katsushika Hokusai
+ */
+
+* {
+  // Base background layers
+  crust:        #14141A;   // darker than base
+  mantle:       #1A1B22;   // intermediate panel bg
+  base:         #1F201F;   // updated main background
+
+  // Surface layers (panels, popups, selection bg)
+  surface0:     #29292E;   // subtle panel bg, slightly lighter gray
+  surface1:     #383838;   // mid-tone surface for popups/lists
+  surface2:     #4A4A4E;   // high contrast surface for selections
+
+  // Text and subtext
+  text:         #DCD7BA;
+  subtext1:     #C8C093;
+  subtext0:     #7A7968;
+
+  // Overlay and borders
+  overlay0:     #4E5060;
+  overlay1:     #353744;
+  overlay2:     #2A2B38;
+  border:       #1A1B22;
+  separator:    #14141A;
+
+  // Semantic colors
+  red:          #C34043;
+  orange:       #FFA066;
+  yellow:       #C0A36E;
+  green:        #76946A;
+  teal:         #6A9589;
+  blue:         #7E9CD8;
+  magenta:      #957FB8;
+  pink:         #D27E99;
+  lavender:     #8BA4B0;
+
+  // Cursor and highlight
+  cursor:       #C8C093;
+  highlight:    #C8C093;
+  highlight-background: #2E5068;
+}
