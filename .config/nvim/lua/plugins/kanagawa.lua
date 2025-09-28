@@ -24,5 +24,6 @@ return {
     vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
 
     vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none', fg = '#cccccc' })
+    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = 'none', fg = '#717c7c' })
   end
 }
