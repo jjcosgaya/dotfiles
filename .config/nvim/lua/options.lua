@@ -53,6 +53,10 @@ vim.opt.cmdheight = 1;
 -- vim.opt.rulerformat = '%80(%= %f | 󰳂 %l:%c | %p%% %m%)' -- Configure ruler to show filename and position
 -- vim.opt.showmode = true         -- Show the current mode (e.g., INSERT, VISUAL) at the bottom.
 
+-- ────────────────────────────────────────────────
+-- Tabs
+-- ────────────────────────────────────────────────
+vim.opt.showtabline = 0;
 
 -- ────────────────────────────────────────────────
 -- Cursor display
@@ -91,7 +95,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.relativenumber = true       -- Show relative line numbers
     vim.opt_local.cursorline = true           -- Highlight current line
     vim.opt_local.scrollback = 100000          -- Scrollback buffer size
-    vim.opt_local.laststatus = 0
   end,
 })
 
