@@ -1,4 +1,4 @@
-local session_dir = vim.fn.expand("~/.nvim_sessions")
+local session_dir = vim.fn.expand("~/.local/nvim_sessions")
 
 if vim.fn.isdirectory(session_dir) == 0 then
   vim.fn.mkdir(session_dir, "p")
