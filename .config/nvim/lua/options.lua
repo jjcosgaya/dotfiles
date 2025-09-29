@@ -86,19 +86,6 @@ vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = 'n'           -- Conceal under cursor in normal mode
 
 
--- ────────────────────────────────────────────────
--- Terminal
--- ────────────────────────────────────────────────
-vim.api.nvim_create_autocmd("TermOpen", {
-  callback = function()
-    vim.opt_local.number = true               -- Show line numbers
-    vim.opt_local.relativenumber = true       -- Show relative line numbers
-    vim.opt_local.cursorline = true           -- Highlight current line
-    vim.opt_local.scrollback = 100000          -- Scrollback buffer size
-  end,
-})
-
-
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- EDITING BEHAVIOR (Settings that modify how text editing works)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -181,3 +168,48 @@ for i=0,25 do vim.keymap.set("n", "m"..low(i), "m"..upp(i)) end
 for i=0,25 do vim.keymap.set("n", "m"..upp(i), "m"..low(i)) end
 for i=0,25 do vim.keymap.set("n", "'"..low(i), "'"..upp(i)) end
 for i=0,25 do vim.keymap.set("n", "'"..upp(i), "'"..low(i)) end
+
+
+-- ────────────────────────────────────────────────
+-- Terminal
+-- ────────────────────────────────────────────────
+local term_group = vim.api.nvim_create_augroup("Terminal", { clear = true })
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = term_group
+  callback = function()
+    vim.opt_local.number = true               -- Hide line numbers
+    vim.opt_local.relativenumber = true       -- Hide relative line numbers
+    vim.opt_local.cursorline = true           -- Not highlight current line
+    vim.opt_local.scrollback = 100000          -- Scrollback buffer size
+  end,
+})
+
+-- Show line numbers when leaving terminal insert mode (i.e., going to normal mode)
+vim.api.nvim_create_autocmd("TermLeave", {
+  group = term_group
+  callback = function()
+    vim.opt_local.number = true
+    vim.opt_local.relativenumber = true
+    vim.opt_local.cursorline = true
+  end,
+})
+
+-- When entering terminal insert-mode again, hide numbering
+vim.api.nvim_create_autocmd("TermEnter", {
+  group = term_group
+  callback = function(args)
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+  end,
+})
+
+-- Close the terminal when closing the window
+vim.api.nvim_create_autocmd("WinClosed", {
+  group = term_group
+  callback = function(event)
+    local bufnr = tonumber(vim.fn.getbufvar(event.buf, 'bufnr')) or event.buf
+    if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buftype == "terminal" then
+      vim.api.nvim_buf_delete(bufnr, { force = true })
+    end
+  end,
+})

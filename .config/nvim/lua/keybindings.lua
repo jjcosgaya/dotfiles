@@ -89,19 +89,17 @@ vim.api.nvim_create_autocmd("FileType", {
 -- ────────────────────────────────────────────────
 -- Terminal
 -- ────────────────────────────────────────────────
-vim.keymap.set('t', '<Esc><Esc>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to terminal normal mode" })
 vim.keymap.set('n', '<leader>tn', ":term<cr>", { noremap = true, silent = true, desc = "New terminal"})
-
 vim.api.nvim_create_autocmd("TermOpen", {
   callback = function()
     -- Send commands with enter from normal mode
     vim.keymap.set('n', '<cr>', [[i<Cr><C-\><C-n>]], { noremap = true, silent = true, buffer = true, desc = "Execute command" })
     -- Create new terminals on splits
-    vim.keymap.set('n', '<C-w>v', ':vsplit | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Execute command" })
-    vim.keymap.set('n', '<C-w>s', ':split | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Execute command" })
-    -- Send arrows with S-j and S-k
-    vim.keymap.set('n', 'J', [[i<Down><C-\><C-n>]], { noremap = true, silent = true, buffer = true })
-    vim.keymap.set('n', 'K', [[i<Up><C-\><C-n>]], { noremap = true, silent = true, buffer = true })
+    vim.keymap.set('n', '<C-w>v', ':vsplit | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Vertical split new terminal" })
+    vim.keymap.set('n', '<C-w>s', ':split | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Horizontal split new terminal" })
+
+    vim.keymap.set('t', '<C-w>v', [[<Cr><C-\><C-n>:vsplit | term<cr>]], { noremap = true, silent = true, buffer = true, desc = "Vertical split new terminal" })
+    vim.keymap.set('t', '<C-w>s', [[<Cr><C-\><C-n>:split | term<cr>]], { noremap = true, silent = true, buffer = true, desc = "Horizontal split new terminal" })
   end,
 })
 
@@ -116,7 +114,11 @@ local showTerminals = function()
     print("You're using more than two tabs!")
   end
 end
-vim.keymap.set('n', '<leader>tt', showTerminals, { noremap = true, silent = true, desc = "Toggle terminals tab"})
+vim.keymap.set('n', '<A-t>', showTerminals, { noremap = true, silent = true, desc = "Toggle terminals tab"})
+vim.keymap.set('t', '<A-t>', [[<C-\><C-n>:tabnext<cr>]], { noremap = true, silent = true, desc = "Toggle terminals tab"})
+vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], { noremap = true, silent = true, desc = "Toggle terminals tab"})
+vim.keymap.set('t', '<C-y>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Copy mode" })
+
 
 wk.add({
   { '<leader>t', group = 'Terminal', mode = 'n' }

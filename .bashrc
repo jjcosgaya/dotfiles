@@ -28,20 +28,13 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fcd='dir=$(fd . ~ --no-ignore --type d 2>/dev/null | fzf) && cd "$dir"'
 
-if [[ -n "$NVIM" ]]; then
-  set -o emacs
+set -o vi
 
-  bind -m emacs-standard '"\e[A": history-search-backward'
-  bind -m emacs-standard '"\e[B": history-search-forward'
-else
-  set -o vi
-
-  # Prefix based history search
-  bind -m vi-command '"k": history-search-backward'
-  bind -m vi-command '"j": history-search-forward'
-  bind -m vi-insert '"\e[A": history-search-backward'
-  bind -m vi-insert '"\e[B": history-search-forward'
-fi
+# Prefix based history search
+bind -m vi-command '"k": history-search-backward'
+bind -m vi-command '"j": history-search-forward'
+bind -m vi-insert '"\e[A": history-search-backward'
+bind -m vi-insert '"\e[B": history-search-forward'
 
 
 export NVM_DIR="$HOME/.nvm"
