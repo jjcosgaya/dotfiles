@@ -6,7 +6,7 @@
   // Base background layers
   crust:        #14141A;   // darker than base
   mantle:       #1A1B22;   // intermediate panel bg
-  base:         #1F201F;   // updated main background
+  base:         #1F201FDD;   // updated main background
 
   // Surface layers (panels, popups, selection bg)
   surface0:     #29292E;   // subtle panel bg, slightly lighter gray

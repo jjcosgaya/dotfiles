@@ -61,11 +61,13 @@ element {
 element-text {
   background-color: transparent;
   text-color: @subtext0;
+  highlight: @text;
 }
 
 element-text selected {
-  text-color: @text;
+  text-color: @subtext0;
 }
+
 
 element-icon {
   size: 22;
@@ -76,27 +78,12 @@ element-icon {
 element.normal.normal {
   background-color: transparent;
 }
-element.normal.urgent {
-  background-color: transparent;
-}
-element.normal.active {
-  background-color: transparent;
-}
 element.selected.normal {
   background-color: @surface0;
-}
-element.selected.urgent {
-  background-color: @surface2;
 }
 element.selected.active {
   background-color: @surface2;
 }
 element.alternate.normal {
-  background-color: transparent;
-}
-element.alternate.urgent {
-  background-color: transparent;
-}
-element.alternate.active {
   background-color: transparent;
 }
