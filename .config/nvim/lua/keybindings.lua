@@ -97,11 +97,10 @@ vim.api.nvim_create_autocmd("TermOpen", {
     -- Create new terminals on splits
     vim.keymap.set('n', '<C-w>v', ':vsplit | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Vertical split new terminal" })
     vim.keymap.set('n', '<C-w>s', ':split | term<cr>', { noremap = true, silent = true, buffer = true, desc = "Horizontal split new terminal" })
-
-    vim.keymap.set('t', '<C-w>v', [[<Cr><C-\><C-n>:vsplit | term<cr>]], { noremap = true, silent = true, buffer = true, desc = "Vertical split new terminal" })
-    vim.keymap.set('t', '<C-w>s', [[<Cr><C-\><C-n>:split | term<cr>]], { noremap = true, silent = true, buffer = true, desc = "Horizontal split new terminal" })
   end,
 })
+vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], { remap = true, silent = true, desc = "Toggle terminals tab"}) -- remap = true allows to execute other keymaps
+vim.keymap.set('t', '<C-y>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Copy mode" })
 
 local showTerminals = function()
   local tab_count = vim.fn.tabpagenr('$')
@@ -116,8 +115,6 @@ local showTerminals = function()
 end
 vim.keymap.set('n', '<A-t>', showTerminals, { noremap = true, silent = true, desc = "Toggle terminals tab"})
 vim.keymap.set('t', '<A-t>', [[<C-\><C-n>:tabnext<cr>]], { noremap = true, silent = true, desc = "Toggle terminals tab"})
-vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], { noremap = true, silent = true, desc = "Toggle terminals tab"})
-vim.keymap.set('t', '<C-y>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Copy mode" })
 
 
 wk.add({

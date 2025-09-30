@@ -175,7 +175,7 @@ for i=0,25 do vim.keymap.set("n", "'"..upp(i), "'"..low(i)) end
 -- ────────────────────────────────────────────────
 local term_group = vim.api.nvim_create_augroup("Terminal", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = term_group
+  group = term_group,
   callback = function()
     vim.opt_local.number = true               -- Hide line numbers
     vim.opt_local.relativenumber = true       -- Hide relative line numbers
@@ -186,7 +186,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- Show line numbers when leaving terminal insert mode (i.e., going to normal mode)
 vim.api.nvim_create_autocmd("TermLeave", {
-  group = term_group
+  group = term_group,
   callback = function()
     vim.opt_local.number = true
     vim.opt_local.relativenumber = true
@@ -196,20 +196,29 @@ vim.api.nvim_create_autocmd("TermLeave", {
 
 -- When entering terminal insert-mode again, hide numbering
 vim.api.nvim_create_autocmd("TermEnter", {
-  group = term_group
+  group = term_group,
   callback = function(args)
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
   end,
 })
 
--- Close the terminal when closing the window
+-- Close the terminal when closing the window (if it's not floating)
 vim.api.nvim_create_autocmd("WinClosed", {
-  group = term_group
+  group = term_group,
   callback = function(event)
-    local bufnr = tonumber(vim.fn.getbufvar(event.buf, 'bufnr')) or event.buf
-    if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buftype == "terminal" then
-      vim.api.nvim_buf_delete(bufnr, { force = true })
+    local function is_floating(win)
+      if not vim.api.nvim_win_is_valid(win) then return false end
+
+      local config = vim.api.nvim_win_get_config(win)
+      return config.relative ~= ""
+    end
+
+    local win = tonumber(event.match)
+    local buf = tonumber(event.buf)
+
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype == "terminal" and not is_floating(win) then
+      vim.api.nvim_buf_delete(buf, { force = true })
     end
   end,
 })
