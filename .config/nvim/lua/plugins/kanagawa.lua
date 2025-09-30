@@ -32,9 +32,9 @@ return {
     hl(0, 'PmenuSel', { fg = palette.highlight, bg = palette.surface0 })
     hl(0, 'PmenuSbar', { bg = palette.surface0 })
     hl(0, 'PmenuThumb', { bg = palette.surface2 })
-    hl(0, 'BlinkCmpLabel', { bg = 'None', fg = palette.text })
-    hl(0, 'BlinkCmpLabelMatch', { bg = 'None', fg = palette.orange, bold = true })
-    hl(0, 'BlinkCmpMenuSelection', { bg = palette.surface0, fg = palette.magenta, bold = true })
+    hl(0, 'BlinkCmpLabel', { bg = 'None', fg = palette.subtext0 })
+    hl(0, 'BlinkCmpLabelMatch', { bg = 'None', fg = palette.text, bold = true })
+    hl(0, 'BlinkCmpMenuSelection', { bg = palette.surface2, fg = palette.text, bold = true })
 
   end
 }
