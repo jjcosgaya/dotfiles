@@ -51,7 +51,7 @@ browser         = "brave"
 # bg              = "./.scripts/bg.sh"
 # bg_random       = "./.scripts/bg_random.sh"
 menu            = "rofi -show drun"
-# passmenu        = "./.scripts/rofipass.sh"
+passmenu        = "./.scripts/rofipass.sh"
 # rofipdf         = "./.scripts/rofi_pdf.sh"
 screenshot      = "flameshot gui"
 
@@ -87,7 +87,7 @@ keys = [
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
     # Key([mod], "o", lazy.spawn(lock), desc="Locks the system"),
     Key([mod], "s", lazy.spawn(screenshot), desc="Take a screenshot"),
-    # Key([mod], "p", lazy.spawn(passmenu,shell=1), desc="passmenu"),
+    Key([mod], "p", lazy.spawn(passmenu,shell=1), desc="passmenu"),
     # Key([mod, "shift"], "p", lazy.spawn(rofipdf,shell=1), desc="Open pdf"),
     # Key([mod], "e", lazy.spawn(speech_to_text,shell=1), desc="Transcribe speech"),
 
@@ -233,24 +233,24 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.GenPollText(
-                    name = 'baraction',
-                    fmt = '{}',
-                    update_interval = 0.01,
-                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/brightness.sh').decode('utf-8').strip(),
-                    background = bar_background),
+                # widget.GenPollText(
+                #     name = 'baraction',
+                #     fmt = '{}',
+                #     update_interval = 0.01,
+                #     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/brightness.sh').decode('utf-8').strip(),
+                #     background = bar_background),
                 widget.GenPollText(
                     name = 'baraction',
                     fmt = '{}',
                     update_interval = 0.01,
                     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/volume.sh').decode('utf-8').strip(),
                     background = bar_background),
-                widget.GenPollText(
-                    name = 'baraction',
-                    fmt = '{}',
-                    update_interval = 5,
-                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/battery.sh').decode('utf-8').strip(),
-                    background = bar_background),
+                # widget.GenPollText(
+                #     name = 'baraction',
+                #     fmt = '{}',
+                #     update_interval = 5,
+                #     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/battery.sh').decode('utf-8').strip(),
+                #     background = bar_background),
                 widget.TextBox("|", foreground=colors[2], background = bar_background),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
