@@ -327,7 +327,8 @@ def autostart():
     subprocess.run('~/.fehbg  && picom &', shell=True)
     try:
         subprocess.Popen(['pipewire'])
-        logging.debug(f"Started {process}")
+        subprocess.Popen(['pipewire-pulse'])
+        subprocess.Popen(['wireplumber'])
     except Exception as e:
         logging.error(f"Failed to start {process}: {e}")
     # subprocess.run('redshift -l 60.192059:24.945831 &', shell=True)
