@@ -6,7 +6,7 @@ config.font = wezterm.font_with_fallback({
   "NotoMono Nerd Font"
 })
 config.harfbuzz_features = { "liga=0", "clig=0", "calt=0" } -- No ligatures
-config.font_size = 13
+config.font_size = 14
 config.color_scheme = 'Kanagawa (Gogh)'
 -- config.color_scheme = 'Ashes (dark) (terminal.sexy)'
 -- config.color_scheme = 'Catppuccin Mocha'
