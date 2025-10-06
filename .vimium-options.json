@@ -1,0 +1,15 @@
+{
+  "keyMappings": "map J nextTab\nmap K previousTab",
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\n\n# More examples.\n#\n# (Vimium supports search completion Wikipedia, as\n# above, and for these.)\n#\ng: https://www.google.com/search?q=%s Google\nl: https://www.google.com/search?q=%s&btnI I'm feeling lucky...\ny: https://yandex.com/search/?text=%s Yandex\nd: https://duckduckgo.com/?q=%s DuckDuckGo\nyt: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Google maps\nrae: https://dle.rae.es/%s Diccionario RAE\nwr: https://www.wordreference.com/enes/%s Diccionario inglés-español\nw: https://en.wikipedia.org/wiki/%s Wikipedia\ngpt: https://chatgpt.com/?q=%s Chatgpt",
+  "settingsVersion": "2.3",
+  "exclusionRules": [
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.google.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://one.sigmally.com/*"
+    }
+  ]
+}
