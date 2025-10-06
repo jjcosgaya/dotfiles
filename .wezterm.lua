@@ -5,6 +5,7 @@ config.font = wezterm.font_with_fallback({
   "JetBrains Mono",
   "NotoMono Nerd Font"
 })
+config.harfbuzz_features = { "liga=0", "clig=0", "calt=0" } -- No ligatures
 config.font_size = 13
 config.color_scheme = 'Kanagawa (Gogh)'
 -- config.color_scheme = 'Ashes (dark) (terminal.sexy)'
