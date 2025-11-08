@@ -198,8 +198,8 @@ vim.api.nvim_create_autocmd("TermLeave", {
 vim.api.nvim_create_autocmd("TermEnter", {
   group = term_group,
   callback = function(args)
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
+    -- vim.opt_local.number = false
+    -- vim.opt_local.relativenumber = false
   end,
 })
 

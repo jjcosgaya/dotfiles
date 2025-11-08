@@ -56,35 +56,36 @@ wk.add({
   { '<leader>c', group = 'Close', mode = 'n' }
 })
 
--- Open File Explorer
-local prev_buf = nil
-function OpenNetrw()
-  prev_buf = vim.api.nvim_get_current_buf()
-  vim.cmd("Explore")
-end
-
-vim.keymap.set('n', '<leader>n', OpenNetrw, { noremap = true, silent = true, desc = 'Open file explorer' })
-
--- Close File Explorer
-function CloseNetrwAndReturn()
-  if prev_buf and vim.api.nvim_buf_is_valid(prev_buf) then
-    local buf_before = vim.api.nvim_get_current_buf()
-    vim.cmd("b" .. prev_buf)
-    local buf_after = vim.api.nvim_get_current_buf()
-    if buf_before == buf_after then -- If they are equal, we didn't leave netrw
-      vim.cmd("bd")
-    end
-  else
-    vim.cmd("bd") -- In case there is no prev_buf, we just close this
-  end
-end
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "netrw",
-  callback = function()
-    vim.keymap.set("n", "q", ":lua CloseNetrwAndReturn()<cr>", { noremap = true, buffer = true, silent = true, nowait = true, desc = "Close file explorer" })
-    vim.bo.buflisted = false -- Make netrw buffer not listed
-  end
-})
+-- COMMENTED BECAUSE I INSTALLED YAZI
+-- -- Open File Explorer
+-- local prev_buf = nil
+-- function OpenNetrw()
+--   prev_buf = vim.api.nvim_get_current_buf()
+--   vim.cmd("Explore")
+-- end
+--
+-- vim.keymap.set('n', '<leader>n', OpenNetrw, { noremap = true, silent = true, desc = 'Open file explorer' })
+--
+-- -- Close File Explorer
+-- function CloseNetrwAndReturn()
+--   if prev_buf and vim.api.nvim_buf_is_valid(prev_buf) then
+--     local buf_before = vim.api.nvim_get_current_buf()
+--     vim.cmd("b" .. prev_buf)
+--     local buf_after = vim.api.nvim_get_current_buf()
+--     if buf_before == buf_after then -- If they are equal, we didn't leave netrw
+--       vim.cmd("bd")
+--     end
+--   else
+--     vim.cmd("bd") -- In case there is no prev_buf, we just close this
+--   end
+-- end
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "netrw",
+--   callback = function()
+--     vim.keymap.set("n", "q", ":lua CloseNetrwAndReturn()<cr>", { noremap = true, buffer = true, silent = true, nowait = true, desc = "Close file explorer" })
+--     vim.bo.buflisted = false -- Make netrw buffer not listed
+--   end
+-- })
 
 -- ────────────────────────────────────────────────
 -- Terminal
