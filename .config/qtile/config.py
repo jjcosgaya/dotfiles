@@ -267,6 +267,47 @@ screens = [
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
     ),
+    Screen(
+        top=bar.Bar(
+            [
+                widget.CurrentLayout(background = bar_background, mode='icon'),
+                widget.GroupBox(highlight_method='line', 
+                                active = colors[9],
+                                inactive = colors[7],
+                                background = bar_background,
+                                rounded = False,
+                                highlight_color = bar_background,
+                                this_current_screen_border = colors[3],
+                                #this_screen_border = colors [4],
+                                #other_current_screen_border = colors[7],
+                                other_screen_border = colors[4]),
+                widget.Prompt(background = bar_background),
+                #widget.WindowName(),
+                widget.Spacer(length = bar.STRETCH, background = bar_background),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                widget.GenPollText(
+                    name = 'baraction',
+                    fmt = '{}',
+                    update_interval = 0.01,
+                    func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/volume.sh').decode('utf-8').strip(),
+                    background = bar_background),
+                widget.TextBox("|", foreground=colors[2], background = bar_background),
+                widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = bar_background),
+            ],
+            24,
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
+        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+        # By default we handle these events delayed to already improve performance, however your system might still be struggling
+        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+        # x11_drag_polling_rate = 60,
+    ),
 ]
 
 # Drag floating layouts.
@@ -323,12 +364,10 @@ wmname = "LG3D"
 
 @hook.subscribe.startup_once
 def autostart():
-    subprocess.call(['setxkbmap', 'es'])
+    subprocess.call(['setxkbmap', 'custom_es'])
     subprocess.run('~/.fehbg  && picom &', shell=True)
     try:
-        subprocess.Popen(['pipewire'])
-        subprocess.Popen(['pipewire-pulse'])
-        subprocess.Popen(['wireplumber'])
+        subprocess.Popen(['pipewire & wireplumber & pipewire-pulse'])
     except Exception as e:
         logging.error(f"Failed to start {process}: {e}")
     # subprocess.run('redshift -l 60.192059:24.945831 &', shell=True)
