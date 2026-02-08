@@ -1,0 +1,9 @@
+// /usr/share/X11/xkb/symbols/custom_es
+partial alphanumeric_keys
+xkb_symbols "ralt_ltgt" {
+  include "es"
+  key <AB08> { [ comma, semicolon, less ] };
+  key <AB09> { [ period, colon, greater ] };
+
+  modifier_map Mod5 { ISO_Level3_Shift };
+};

@@ -59,8 +59,8 @@ volume_up       = "pamixer -i 3"
 volume_down     = "pamixer -d 3"
 mute            = "pamixer -t"
 mute_mic        = "pamixer --default-source -t"
-brightness_up   = "brillo -A 5"
-brightness_down = "brillo -U 5"
+# brightness_up   = "brillo -A 5"
+# brightness_down = "brillo -U 5"
 
 # speech_to_text  = "./.scripts/speech_to_txt.sh"
 
@@ -106,8 +106,8 @@ keys = [
     Key([], "xf86audiomicmute", lazy.spawn(mute_mic), desc="Mute microphone"),
 
 
-    Key([], "xf86monbrightnessup", lazy.spawn(brightness_up), desc="Increase brightness"),
-    Key([], "xf86monbrightnessdown", lazy.spawn(brightness_down), desc="Decrease brightness"),
+    # Key([], "xf86monbrightnessup", lazy.spawn(brightness_up), desc="Increase brightness"),
+    # Key([], "xf86monbrightnessdown", lazy.spawn(brightness_down), desc="Decrease brightness"),
 
     # --------------------------------------------------------------------------------------------
     # WINDOWS
@@ -124,10 +124,10 @@ keys = [
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod, "control"], "h", lazy.layout.grow(), desc="Grow window to the left"),
+    Key([mod, "control"], "l", lazy.layout.shrink(), desc="Grow window to the right"),
+    # Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
+    # Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -182,8 +182,8 @@ for i in groups:
 #         |___/
 
 layouts = [
-    layout.MonadTall(margin=15, border_focus= border_color, border_normal=border_unfocused_color , border_width=2),
-    layout.MonadWide(margin=15, border_focus=border_color , border_normal=border_unfocused_color , border_width=2),
+    layout.MonadTall(margin=15, border_focus= border_color, border_normal=border_unfocused_color , border_width=2, ratio=0.60),
+    layout.MonadWide(margin=15, border_focus=border_color , border_normal=border_unfocused_color , border_width=2, ratio=0.60),
     layout.Max(),
     # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
     # layout.Stack(num_stacks=2),
@@ -221,11 +221,8 @@ screens = [
                                 rounded = False,
                                 highlight_color = bar_background,
                                 this_current_screen_border = colors[3],
-                                #this_screen_border = colors [4],
-                                #other_current_screen_border = colors[7],
                                 other_screen_border = colors[4]),
                 widget.Prompt(background = bar_background),
-                #widget.WindowName(),
                 widget.Spacer(length = bar.STRETCH, background = bar_background),
                 widget.Chord(
                     chords_colors={
@@ -233,39 +230,21 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                # widget.GenPollText(
-                #     name = 'baraction',
-                #     fmt = '{}',
-                #     update_interval = 0.01,
-                #     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/brightness.sh').decode('utf-8').strip(),
-                #     background = bar_background),
                 widget.GenPollText(
                     name = 'baraction',
                     fmt = '{}',
                     update_interval = 0.01,
                     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/volume.sh').decode('utf-8').strip(),
                     background = bar_background),
-                # widget.GenPollText(
-                #     name = 'baraction',
-                #     fmt = '{}',
-                #     update_interval = 5,
-                #     func = lambda: subprocess.check_output('/home/jota/.scripts/bar_info/battery.sh').decode('utf-8').strip(),
-                #     background = bar_background),
                 widget.TextBox("|", foreground=colors[2], background = bar_background),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
                 widget.Systray(background = bar_background),
                 widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = bar_background),
                 #widget.QuickExit(),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
+        x11_drag_polling_rate = 60,
     ),
     Screen(
         top=bar.Bar(
@@ -278,11 +257,8 @@ screens = [
                                 rounded = False,
                                 highlight_color = bar_background,
                                 this_current_screen_border = colors[3],
-                                #this_screen_border = colors [4],
-                                #other_current_screen_border = colors[7],
                                 other_screen_border = colors[4]),
                 widget.Prompt(background = bar_background),
-                #widget.WindowName(),
                 widget.Spacer(length = bar.STRETCH, background = bar_background),
                 widget.Chord(
                     chords_colors={
@@ -300,13 +276,8 @@ screens = [
                 widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = bar_background),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
+        x11_drag_polling_rate = 60,
     ),
 ]
 
@@ -364,11 +335,8 @@ wmname = "LG3D"
 
 @hook.subscribe.startup_once
 def autostart():
-    subprocess.call(['setxkbmap', 'custom_es'])
-    subprocess.run('~/.fehbg  && picom &', shell=True)
-    try:
-        subprocess.Popen(['pipewire & wireplumber & pipewire-pulse'])
-    except Exception as e:
-        logging.error(f"Failed to start {process}: {e}")
-    # subprocess.run('redshift -l 60.192059:24.945831 &', shell=True)
+    subprocess.run(['setxkbmap', 'custom_es'])
+    subprocess.Popen('~/.fehbg', shell=True)
+    subprocess.Popen('picom')
+    subprocess.run('redshift -l 60.192059:24.945831', shell=True)
     # subprocess.run('/home/jota/.screenlayout/home_screenlayout.sh')
