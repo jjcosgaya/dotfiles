@@ -50,4 +50,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+export PATH="$HOME/.cargo/bin:$PATH"
+
 pfetch
