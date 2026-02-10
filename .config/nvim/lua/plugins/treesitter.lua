@@ -4,8 +4,8 @@ return {
       build = ':TSUpdate',
       config = function()
         require('nvim-treesitter.config').setup({
-          ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline' },
-          auto_install = true, -- Automatically install missing parsers
+          ensure_installed = { 'c', 'lua', 'python', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline' },
+          auto_install = true,
 
           highlight = {
             enable = true,
