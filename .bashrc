@@ -26,7 +26,8 @@ deduplicate_history() {
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fcd='dir=$(fd . ~ --no-ignore --type d 2>/dev/null | fzf) && cd "$dir"'
+# alias fcd='dir=$(fd . ~ --no-ignore --type d 2>/dev/null | fzf) && cd "$dir"'
+alias fcd='dir=$(FZF_DEFAULT_COMMAND="fd . ~ --no-ignore --type d 2>/dev/null" fzf) && cd "$dir"'
 
 set -o vi
 
@@ -52,4 +53,9 @@ esac
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+
 pfetch
+. "$HOME/.cargo/env"
