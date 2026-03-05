@@ -28,7 +28,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 # alias fcd='dir=$(fd . ~ --no-ignore --type d 2>/dev/null | fzf) && cd "$dir"'
 alias fcd='dir=$(FZF_DEFAULT_COMMAND="fd . ~ --no-ignore --type d 2>/dev/null" fzf) && cd "$dir"'
-
+alias fpdf='pdf=$(FZF_DEFAULT_COMMAND="fd . ~ -e pdf -t f --no-ignore 2>/dev/null" fzf --preview="pdftotext {} - | head -50") && (zathura "$pdf" &)'
 set -o vi
 
 # Prefix based history search
