@@ -59,3 +59,17 @@ eval "$(pyenv init - bash)"
 
 pfetch
 . "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/jota/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# opencode
+export PATH=/home/jota/.opencode/bin:$PATH
+
+# obsidian
+export OBSIDIAN_VAULT="$HOME/Documents/main_vault"
+
+# tuxedo
+export TODO_FILE="$OBSIDIAN_VAULT/.todo.txt"
