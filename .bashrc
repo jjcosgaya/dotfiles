@@ -73,3 +73,4 @@ export OBSIDIAN_VAULT="$HOME/Documents/main_vault"
 
 # tuxedo
 export TODO_FILE="$OBSIDIAN_VAULT/.todo.txt"
+export DONE_FILE="$OBSIDIAN_VAULT/.done.txt"
