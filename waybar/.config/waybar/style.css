@@ -1,0 +1,109 @@
+/*
+ * Waybar — Kanagawa Dragon (Gogh)
+ * Palette from the WezTerm color scheme:
+ *   background #181616   (black)
+ *   foreground #c5c9c5   (white)
+ *   accent     #c8c093   (cream)
+ *   muted      #a6a69c   (gray)
+ *   warn       #e6c384   (yellow)
+ *   critical   #e46876   (red)
+ *   ok         #87a987   (green)
+ *
+ * Font: Source Sans 3 (the modern upgrade of Source Sans Pro).
+ * The fallback chain is shared across the system so the same glyph
+ * is drawn the same way in the bar, in fuzzel and in wezterm.
+ */
+
+* {
+    border:        none;
+    border-radius: 0;
+    font-family:   "Source Sans 3", "Noto Sans Symbols 2", "Font Awesome 7 Free";
+    font-size:     14px;
+    box-shadow:    none;
+    text-shadow:   none;
+    transition-duration: 0s;
+}
+
+window#waybar {
+    color: #c5c9c5;
+    background-color: rgba(24, 22, 22, 0.92);
+    border-bottom: 2px solid rgba(197, 201, 197, 0.4);
+}
+
+/* Calendar popup (clock tooltip): opaque palette background with a thin
+   accent border, so nothing shows through and it doesn't clash. */
+tooltip {
+    background-color: rgba(24, 22, 22, 0.96);
+    border: 1px solid rgba(200, 192, 147, 0.35);
+    border-radius: 6px;
+}
+
+tooltip label {
+    color: #c5c9c5;
+}
+
+window#waybar.solo {
+    color: #c5c9c5;
+}
+
+#workspaces {
+    margin-right: 5px;
+}
+
+#workspaces button {
+    /* min-width: 0 keeps the GTK theme from stretching the buttons */
+    padding: 0 12px;
+    min-width: 0;
+    min-height: 0;
+    color: #a6a69c;
+}
+
+#workspaces button:hover {
+    background: rgba(166, 166, 156, 0.15);
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    color: #e46876;
+}
+
+/* Hide the extra dynamic workspace niri appends beyond 9 */
+#workspaces button#niri-workspace-10 {
+    opacity: 0;
+    font-size: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    min-height: 0;
+    border: none;
+    background: transparent;
+}
+
+#battery,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#temperature,
+#backlight,
+#language,
+#clock {
+    margin: 0px 6px 0px 10px;
+}
+
+#battery.warning {
+    color: #e6c384;
+}
+
+#battery.critical {
+    color: #e46876;
+}
+
+#battery.charging {
+    color: #87a987;
+}

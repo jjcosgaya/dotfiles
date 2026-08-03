@@ -1,0 +1,4 @@
+# Generated/local dependency environments
+**/.venv/
+**/__pycache__/
+*.py[cod]

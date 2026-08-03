@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Select a password-store entry with fuzzel and copy its password.
+set -euo pipefail
+
+store=${PASSWORD_STORE_DIR:-$HOME/.password-store}
+mode=password
+
+case "${1:-}" in
+    -u|--username) mode=username ;;
+    -h|--help)
+        printf 'Usage: %s [-u|--username]\n' "${0##*/}"
+        exit 0
+        ;;
+    '') ;;
+    *)
+        printf 'Unknown option: %s\n' "$1" >&2
+        exit 2
+        ;;
+esac
+
+command -v fuzzel >/dev/null || exit 1
+if [[ "$mode" == username ]]; then
+    command -v wl-copy >/dev/null || exit 1
+else
+    command -v pass >/dev/null || exit 1
+fi
+[[ -d "$store" ]] || exit 0
+
+entries=$(
+    find -L "$store" -path '*/.git' -prune -o \
+        -type f -name '*.gpg' -printf '%P\n' |
+        sed 's/\.gpg$//' |
+        sort
+)
+[[ -n "$entries" ]] || exit 0
+
+prompt='Password:  '
+if [[ "$mode" == username ]]; then
+    prompt='Username:  '
+fi
+entry=$(printf '%s\n' "$entries" |
+    fuzzel --dmenu --no-icons --only-match \
+        --prompt="$prompt" --placeholder='Choose an entry…') || exit 0
+[[ -n "$entry" ]] || exit 0
+
+if [[ "$mode" == username ]]; then
+    # Entries are expected to look like: folder/.../url/username.gpg
+    printf '%s' "${entry##*/}" | wl-copy --type text/plain
+else
+    # Let pass handle clipboard integration and timed clearing. Explicitly
+    # select the graphical pinentry even if Niri was started from a terminal.
+    PINENTRY_USER_DATA=gui pass -c -- "$entry"
+fi

@@ -1,0 +1,79 @@
+# Mako — Kanagawa Dragon
+# A quiet, compact notification card that shares the palette and type
+# scale used by Waybar, Fuzzel and GTK.
+
+# ──── Layout ─────────────────────────────────────────────────────
+# Sit below the 30 px Waybar, with enough breathing room to feel detached
+# from the edge without wasting the screen.
+anchor=top-right
+layer=overlay
+outer-margin=36,22,18,22
+margin=6
+width=420
+height=180
+max-visible=4
+
+# ──── Surface ────────────────────────────────────────────────────
+font=Source Sans 3 11
+background-color=#181616f5
+text-color=#c5c9c5
+padding=12,14
+border-size=1
+border-color=#c8c09380
+border-radius=12
+
+# ──── Content ────────────────────────────────────────────────────
+icons=1
+max-icon-size=48
+icon-location=left
+icon-border-radius=8
+# FairyWren stores scalable icons directly in context folders (rather than
+# hicolor's size/context hierarchy), so include those folders explicitly.
+icon-path=/home/jota/.icons/FairyWren/status:/home/jota/.icons/FairyWren/apps:/home/jota/.icons/FairyWren/actions:/home/jota/.icons/FairyWren/devices:/home/jota/.icons/FairyWren/mimetypes:/home/jota/.icons/FairyWren/places:/home/jota/.icons/FairyWren:/usr/share/icons/hicolor:/usr/share/pixmaps
+markup=1
+actions=1
+# Alpha uses Pango's 0–65535 form: percentages would be mistaken for
+# format specifiers by mako because they contain a `%`.
+format=<span weight="semibold" size="large">%s</span>\n<span alpha="55705">%b</span>\n<span size="small" alpha="39321">%a</span>
+
+# Keep a useful history for restoring a notification with `makoctl restore`.
+max-history=20
+history=1
+sort=-time
+
+# Normal notifications fade away on their own; applications may still supply
+# a more appropriate timeout when they know better.
+default-timeout=6000
+
+# ──── Interaction ─────────────────────────────────────────────────
+# Left click follows the notification's default action, middle click clears
+# the stack, and right click/touch dismisses the current card.
+on-button-left=invoke-default-action
+on-button-middle=dismiss-all
+on-button-right=dismiss
+on-touch=dismiss
+
+# ──── Urgency accents ────────────────────────────────────────────
+# Low-priority messages recede; normal messages use the Kanagawa cream;
+# critical messages get a warm red surface and remain until dismissed.
+[urgency=low]
+background-color=#181616e8
+text-color=#a6a69c
+border-color=#8ba4b080
+progress-color=over #8ba4b0aa
+default-timeout=4500
+
+[urgency=normal]
+background-color=#181616f5
+text-color=#c5c9c5
+border-color=#c8c093a6
+progress-color=over #c8c093cc
+default-timeout=6000
+
+[urgency=critical]
+background-color=#2a1d20f7
+text-color=#f0d6d7
+border-color=#e46876e6
+progress-color=over #e46876e6
+default-timeout=0
+ignore-timeout=1

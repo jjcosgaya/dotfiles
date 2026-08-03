@@ -1,0 +1,57 @@
+# Zathura — Kanagawa Dragon palette.
+# Matches wezterm's "Kanagawa Dragon (Gogh)" scheme, the waybar style and the
+# patched Graphite-Dark GTK theme (bg #181616). RGB values come straight from
+# kanagawa.nvim's dragon extras (extras/gogh + extras/wezterm):
+#   bg        #181616  dragonBlack3   fg      #C5C9C5  dragonWhite
+#   surface0  #282727  dragonBlack4   red     #E46876  bright red
+#   surface1  #393836  dragonBlack5   yellow  #E6C384  bright yellow
+#   surface2  #625e5a  dragonBlack6   blue    #7FB4CA  bright blue
+#   selection #2D4F67                 pink    #A292A3  dragonPink (magenta)
+#
+# Transparency is driven from here: the *-bg and recolor-lightcolor colors
+# carry alpha < 1, so girara produces a translucent Wayland surface and the
+# compositor lets the wallpaper show through. No per-compositor rule needed.
+#
+# Note on the PDF page: it is painted *over* default-bg, so with the same
+# alpha the page ends up a touch more opaque than the chrome/gutters (keeps
+# text readable). Lower these alphas for more see-through; raise toward 1.0
+# for opaque.
+
+set default-fg                      rgba(197,201,197,1)       # @fg
+set default-bg                      rgba(24,22,22,0.95)       # @bg
+
+set completion-bg                   rgba(40,39,39,0.95)       # @surface0
+set completion-fg                   rgba(197,201,197,1)       # @fg
+set completion-highlight-bg         rgba(98,94,90,0.95)       # @surface2
+set completion-highlight-fg         rgba(197,201,197,1)       # @fg
+set completion-group-bg             rgba(40,39,39,0.95)       # @surface0
+set completion-group-fg             rgba(127,180,202,1)       # @blue
+
+set statusbar-fg                    rgba(197,201,197,1)       # @fg
+set statusbar-bg                    rgba(57,56,54,0.95)       # @surface1
+
+set notification-bg                 rgba(40,39,39,0.95)       # @surface0
+set notification-fg                 rgba(197,201,197,1)       # @fg
+set notification-error-bg           rgba(40,39,39,0.95)       # @surface0
+set notification-error-fg           rgba(228,104,118,1)       # @red
+set notification-warning-bg         rgba(40,39,39,0.95)       # @surface0
+set notification-warning-fg         rgba(230,195,132,1)       # @yellow
+
+set inputbar-fg                     rgba(197,201,197,1)       # @fg
+set inputbar-bg                     rgba(40,39,39,0.95)       # @surface0
+
+set recolor                         "true"
+set recolor-lightcolor              rgba(24,22,22,0)        # @bg (transparent: text floats on wallpaper)
+set recolor-darkcolor               rgba(197,201,197,1)       # @fg
+
+set index-fg                        rgba(197,201,197,1)       # @fg
+set index-bg                        rgba(24,22,22,0.95)       # @bg
+set index-active-fg                 rgba(197,201,197,1)       # @fg
+set index-active-bg                 rgba(57,56,54,0.95)       # @surface1
+
+set render-loading-bg               rgba(24,22,22,0.95)       # @bg
+set render-loading-fg               rgba(197,201,197,1)       # @fg
+
+set highlight-color                 rgba(45,79,103,0.5)       # @selection (wezterm selection bg) w/ alpha
+set highlight-fg                    rgba(162,146,163,0.5)      # @pink w/ alpha
+set highlight-active-color          rgba(162,146,163,0.5)      # @pink w/ alpha

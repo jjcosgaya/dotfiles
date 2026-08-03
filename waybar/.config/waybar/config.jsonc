@@ -1,0 +1,128 @@
+{
+    "layer": "top", // Waybar at top layer
+    "height": 30, // Waybar height (to be removed for auto height)
+    // Choose the order of the modules
+    "modules-left": ["niri/workspaces", "tray"],
+    "modules-center": ["niri/window"],
+    "modules-right": ["network", "custom/zypper", "cpu", "memory", "temperature", "backlight", "battery", "pulseaudio", "clock", "niri/language"],
+
+    // ──── Workspaces & window ─────────────────────────────────────
+    "niri/workspaces": {
+        "sort-by-number": true,
+        "format": "{index}",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "urgent": ""
+        }
+    },
+    "niri/window": {
+        "max-length": 80,
+        "tooltip": false
+    },
+
+    // ──── Language ────────────────────────────────────────────────
+    "niri/language": {
+        "format": "{short}",
+        // Click to cycle through the layouts defined in the niri config
+        // (input > keyboard > xkb > layout).
+        "on-click": "niri msg action switch-layout next"
+    },
+
+    // ──── Updates ─────────────────────────────────────────────────
+    "custom/zypper": {
+        "format": " {}",
+        "interval": 3600,
+        "exec": "zypper lu | grep 'v \\+|' | wc -l; echo 'packages to update'",
+        "on-click": "exec wezterm -e sudo sh -c 'zypper ref; zypper dup; pkill -SIGRTMIN+8 waybar'",
+        "signal": 8
+    },
+
+    // ──── Tray ────────────────────────────────────────────────────
+    "tray": {
+        "spacing": 10
+    },
+
+    // ──── Clock ───────────────────────────────────────────────────
+    "clock": {
+        // "01 Aug 2026 13:04" (day-month-year, English words);
+        // click for numeric dd/mm/yyyy: "01/08/2026 13:04"
+        "format": " {:%d %b %Y %R}",
+        "format-alt": " {:%d/%m/%Y %R}",
+        "tooltip-format": "<span color='#c5c9c5'><tt><small>{calendar}</small></tt></span>",
+        "calendar": {
+            "mode-mon-col": 4,
+            "weeks-pos": "left",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#c5c9c5'><b>{}</b></span>",
+                "days": "<span color='#c5c9c5'>{}</span>",
+                "weeks": "<span color='#4a4a4a'><b>{}</b></span>",
+                "weekdays": "<span color='#a6a69c'><b>{}</b></span>",
+                "today": "<span color='#181616' background='#c5c9c5'><b>{}</b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        },
+        "interval": 10
+    },
+
+    // ──── System & audio ──────────────────────────────────────────
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " {}%"
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["", ""]
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{capacity}% {time}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "network": {
+        "format-wifi": "",
+        "format-ethernet": "",
+        "format-linked": "",
+        "format-disconnected": "⚠",
+        "format-alt": "{ifname} {essid} ({signalStrength}%)"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-alt": "{icon} {volume}",
+        "format-alt-click": "click-middle",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "scroll-step": 10,
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
+        "tooltip": true
+    }
+}

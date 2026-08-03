@@ -1,0 +1,51 @@
+# lsd color theme — matched to the shell prompt palette in ~/.bashrc:
+#   cyan   6 -> dark_cyan     (dirs + user column; same as di=36 in LS_COLORS)
+#   magenta 5 -> dark_magenta (symlinks; same as ln=35 in LS_COLORS)
+#   green  2 -> dark_green    (success / recent / small)
+#   yellow 3 -> dark_yellow   (warning / modified / medium)
+#   red    1 -> dark_red      (error / deleted / large)
+#   white  7 -> grey          (path in prompt)
+#   grey 245 -> 245           (muted metadata)
+#
+# NOTE: lsd renders named colors as their BRIGHT variant (cyan -> 14), so the
+# dark_* names are used here to get the exact base palette of the prompt.
+# File-type colors come from LS_COLORS in ~/.bashrc (shared with ls); this
+# file only covers the metadata columns, which GNU ls does not color at all.
+user: dark_cyan
+group: grey
+permission:
+  read: dark_green
+  write: dark_yellow
+  exec: dark_red
+  exec-sticky: dark_magenta
+  no-access: 245
+  octal: dark_cyan
+  acl: dark_cyan
+  context: dark_cyan
+date:
+  hour-old: dark_green
+  day-old: dark_cyan
+  older: 245
+size:
+  none: 245
+  small: dark_green
+  medium: dark_yellow
+  large: dark_red
+inode:
+  valid: dark_magenta
+  invalid: 245
+links:
+  valid: dark_magenta
+  invalid: 245
+tree-edge: 245
+git-status:
+  default: 245
+  unmodified: 245
+  ignored: 245
+  new-in-index: dark_green
+  new-in-workdir: dark_green
+  typechange: dark_yellow
+  deleted: dark_red
+  renamed: dark_green
+  modified: dark_yellow
+  conflicted: dark_red

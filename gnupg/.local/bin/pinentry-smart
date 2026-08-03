@@ -1,0 +1,7 @@
+#!/bin/sh
+# Use the terminal pinentry for terminal commands and GTK pinentry otherwise.
+if [ "${PINENTRY_USER_DATA:-}" = tty ]; then
+    exec /usr/bin/pinentry-curses "$@"
+fi
+
+exec /usr/bin/pinentry-gnome3 "$@"

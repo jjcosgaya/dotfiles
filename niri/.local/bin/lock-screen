@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Lock with a blurred snapshot of the screen that was visible before locking.
+set -euo pipefail
+
+umask 077
+
+swaylock_options=(
+    --indicator-idle-visible
+    --indicator-radius 100
+    --indicator-thickness 8
+    --inside-color 181616cc
+    --inside-clear-color 76946af5
+    --inside-ver-color 76946aff
+    --inside-wrong-color e46876cc
+    --ring-color c8c093ff
+    --ring-clear-color 76946aff
+    --ring-ver-color 76946aff
+    --ring-wrong-color e46876ff
+    --line-color 18161600
+    --separator-color 18161600
+    --key-hl-color 76946aff
+    --caps-lock-key-hl-color 76946aff
+    --layout-bg-color 18161600
+    --layout-border-color 18161600
+    --layout-text-color dcd7baff
+    --bs-hl-color e46876ff
+    --text-color c5c9c5ff
+)
+
+# Keep a usable fallback if capturing or blurring fails.
+lock_with_color() {
+    swaylock --color 181616ff "${swaylock_options[@]}"
+}
+
+# Keep the unblurred and blurred images in the per-session runtime directory;
+# cleanup removes them as soon as swaylock exits.
+runtime_dir=${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}
+if ! tmpdir=$(mktemp -d "$runtime_dir/lock-screen.XXXXXX" 2>/dev/null); then
+    lock_with_color
+    exit
+fi
+
+raw="$tmpdir/screenshot.png"
+blurred="$tmpdir/blurred.jpg"
+
+cleanup() {
+    rm -rf -- "$tmpdir"
+}
+trap cleanup EXIT
+
+# niri's normal screenshot action sends a "Screenshot captured" notification.
+# Dismiss only those notifications, leaving notifications from other apps alone.
+dismiss_screenshot_notification() {
+    local ids id
+
+    command -v makoctl >/dev/null 2>&1 || return 0
+    command -v jq >/dev/null 2>&1 || return 0
+
+    # The notification is delivered asynchronously, so give mako a short
+    # window to receive it before looking for it.
+    for _ in {1..50}; do
+        ids=$(makoctl list -j 2>/dev/null |
+            jq -r '.[] | select(.app_name == "niri" and .summary == "Screenshot captured") | .id') || return 0
+        if [[ -n "$ids" ]]; then
+            while IFS= read -r id; do
+                [[ -n "$id" ]] || continue
+                makoctl dismiss -n "$id" -h >/dev/null 2>&1 || true
+            done <<< "$ids"
+            return 0
+        fi
+        sleep 0.01
+    done
+}
+
+# niri's screenshot action is quick and captures the focused output. We keep
+# its file in our private temp directory instead of the normal Screenshots
+# folder; the file is ready asynchronously, hence the short wait below.
+if ! niri msg action screenshot-screen \
+    --path "$raw" \
+    --write-to-disk true \
+    --show-pointer false; then
+    lock_with_color
+    exit
+fi
+
+# Dismiss the notification while the image is being prepared, so this wait
+# overlaps with the blur instead of adding to the lock launch time.
+dismiss_screenshot_notification &
+dismiss_pid=$!
+
+for _ in {1..100}; do
+    [[ -s "$raw" ]] && break
+    sleep 0.02
+done
+if [[ ! -s "$raw" ]]; then
+    wait "$dismiss_pid" 2>/dev/null || true
+    lock_with_color
+    exit
+fi
+
+# Work at a small thumbnail size: ImageMagick's full-resolution Gaussian
+# blur is expensive on a 1920x1080 screenshot. Upscaling the already-blurred
+# image keeps the background smooth while making the lock feel snappy.
+if ! magick "$raw" \
+    -scale 10% \
+    -blur 0x3 \
+    -resize 1000% \
+    -modulate 75,90,100 \
+    -strip \
+    -quality 85 \
+    "$blurred"; then
+    wait "$dismiss_pid" 2>/dev/null || true
+    lock_with_color
+    exit
+fi
+
+wait "$dismiss_pid" 2>/dev/null || true
+swaylock --image "$blurred" --scaling fill "${swaylock_options[@]}"

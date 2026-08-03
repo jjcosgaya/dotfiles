@@ -1,0 +1,48 @@
+{
+  "exclusionRules": [
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.google.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://one.sigmally.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://cytos.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://www.netflix.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://ryuten.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://senpa.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://wordbomb.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://diep.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://www.notion.so/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://agarx.net/*"
+    }
+  ],
+  "keyMappings": "# Insert your preferred key mappings here.\nmap ' Marks.activateGotoMode",
+  "newTabDestination": "browserNewTabPage",
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\n\ng: https://www.google.com/search?q=%s Google\nyt: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Google maps\nd: https://duckduckgo.com/?q=%s DuckDuckGo",
+  "settingsVersion": "2.4.2"
+}

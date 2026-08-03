@@ -1,0 +1,298 @@
+// niri config (KDL). Wiki: https://niri-wm.github.io/niri/
+// Reload with Mod+Shift+F5, no session restart needed.
+
+// ──── Input ─────────────────────────────────────────────────────
+input {
+    keyboard {
+        xkb {
+            // Layouts es,fi; the "niri/language" waybar module cycles
+            // between them with switch-layout next.
+            layout "es,fi"
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+    }
+}
+
+// ──── Cursor ───────────────────────────────────────────────────
+// Also exports XCURSOR_THEME/SIZE for clients. Bibata Modern Ice
+// (installed from ~/Downloads/Bibata-Modern-Ice.tar.xz).
+cursor {
+    xcursor-theme "Bibata-Modern-Ice"
+    xcursor-size 24
+}
+
+// ──── Layout ────────────────────────────────────────────────────
+layout {
+    // Color behind the wallpaper in normal workspaces.
+    background-color "#ffffff"
+
+    gaps 16
+
+    // Widths cycled by Mod+R (fraction of the output, gaps aside).
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    // Window heights cycled by Mod+E (fraction of the column height,
+    // only matters with multiple windows in a column).
+    preset-window-heights {
+        proportion 0.2
+        proportion 0.5
+        proportion 0.8
+    }
+
+    // Initial width of new windows.
+    default-column-width { proportion 0.5; }
+
+    // The focus ring is painted as a background behind the window, so it
+    // shows through semi-transparent windows (hence prefer-no-csd below).
+    focus-ring {
+        width 1
+        active-color "#ffffff"
+        inactive-color "#505050"
+    }
+
+    // Shadows (logical pixels, CSS box-shadow style).
+    shadow {
+        on
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+}
+
+// Color behind workspaces and wallpaper in the overview.
+overview {
+    backdrop-color "#101010"
+}
+
+// ──── Animations ─────────────────────────────────────────────────
+// A slightly more relaxed, critically-damped profile: smooth movement
+// without the distracting bounce that underdamped springs can introduce.
+// Keep the three related motion animations in sync so resizing or moving
+// a window does not make the camera and neighboring windows drift apart.
+animations {
+    workspace-switch {
+        spring damping-ratio=1.0 stiffness=650 epsilon=0.0001
+    }
+    window-open {
+        duration-ms 180
+        curve "cubic-bezier" 0.05 0.7 0.1 1
+    }
+    window-close {
+        duration-ms 140
+        curve "ease-out-quad"
+    }
+    horizontal-view-movement {
+        spring damping-ratio=1.0 stiffness=650 epsilon=0.0001
+    }
+    window-movement {
+        spring damping-ratio=1.0 stiffness=650 epsilon=0.0001
+    }
+    window-resize {
+        spring damping-ratio=1.0 stiffness=650 epsilon=0.0001
+    }
+    overview-open-close {
+        spring damping-ratio=1.0 stiffness=650 epsilon=0.0001
+    }
+}
+
+// ──── Startup ───────────────────────────────────────────────────
+// Note: spawn-at-startup does not go through a shell, so "~" is not
+// expanded; use absolute paths (or spawn-sh-at-startup for pipes/vars).
+// Mako is also D-Bus-activatable, but starting it here makes the themed
+// daemon ready before the first notification arrives.
+spawn-at-startup "mako"
+spawn-at-startup "waybar"
+
+// niri paints no wallpaper; swaybg does.
+spawn-at-startup "swaybg" "-i" "/home/jota/Pictures/minimalist_black_landscape.jpg"
+
+// ──── Workspaces ────────────────────────────────────────────────
+// Named workspaces persist even when empty, so "3" is always workspace 3
+// (dynamic indices would get renumbered).
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+workspace "5"
+workspace "6"
+workspace "7"
+workspace "8"
+workspace "9"
+
+// ──── Windows ───────────────────────────────────────────────────
+// Ask apps to omit their CSD (title bars) when possible: the focus ring
+// and shadow then draw around the window instead of behind it.
+// Restart apps after changing this.
+prefer-no-csd
+
+// WezTerm: with prefer-no-csd, niri sends it the "tiled" state and
+// WezTerm (its bug) ignores resizes. tiled-state false avoids that.
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    tiled-state false
+}
+
+// Firefox picture-in-picture floating.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Rounded corners everywhere (shadow fits thanks to prefer-no-csd).
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+// The waybar calendar tooltip is a separate popup: no rounding.
+window-rule {
+    match app-id="waybar"
+    geometry-corner-radius 0
+    clip-to-geometry false
+}
+layer-rule {
+    match namespace="waybar"
+    popups {
+        geometry-corner-radius 0
+    }
+}
+
+// Screenshot path (strftime format; "~" is expanded here).
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// ──── Hotkey overlay ────────────────────────────────────────────
+hotkey-overlay {
+    // Don't show the keybindings overlay automatically at startup.
+    skip-at-startup
+    // Don't list actions with no bound key.
+    hide-not-bound
+}
+
+// ──── Binds ─────────────────────────────────────────────────────
+// "Mod" = Super (Alt in winit window mode). Binds match on the raw
+// keysym, the key's symbol without Shift: on a Spanish layout "?" =
+// Shift+', "+" = the AD12 key and "-" = AB10, hence Apostrophe/Plus/Minus.
+binds {
+    // ── System ──
+    // load-config-file is not a direct bind action (niri >= 25):
+    // spawn-sh inherits NIRI_SOCKET and calls niri msg.
+    Mod+Shift+F5 { spawn-sh "niri msg action load-config-file"; }
+    Mod+Shift+Apostrophe { show-hotkey-overlay; }
+    Mod+O repeat=false { toggle-overview; }
+
+    // ── Launchers ──
+    Mod+Return repeat=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
+    Mod+D repeat=false hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+P repeat=false hotkey-overlay-title="Copy Password: pass-fuzzel" { spawn "pass-fuzzel"; }
+    Mod+U repeat=false hotkey-overlay-title="Copy Username: pass-fuzzel" { spawn "pass-fuzzel" "--username"; }
+    Mod+B repeat=false hotkey-overlay-title="Open the Browser: Brave" { spawn "brave-browser"; }
+    Mod+Shift+O hotkey-overlay-title="Lock the Screen: blurred screenshot" { spawn "lock-screen"; }
+
+    // ── Windows ──
+    Mod+Shift+Q repeat=false { close-window; }
+    Mod+T       { toggle-window-floating; }
+    Mod+Shift+T { switch-focus-between-floating-and-tiling; }
+    Mod+W { toggle-column-tabbed-display; }
+
+    // ── Focus and movement (Vim-style) ──
+    Mod+H     { focus-column-left; }
+    // At the edge of a workspace, continue to the next/previous workspace.
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+K     { focus-window-or-workspace-up; }
+    Mod+L     { focus-column-right; }
+    Mod+Shift+H { move-column-left; }
+    // At the edge of a workspace, move the window to the next/previous workspace.
+    Mod+Shift+J { move-window-down-or-to-workspace-down; }
+    Mod+Shift+K { move-window-up-or-to-workspace-up; }
+    Mod+Shift+L { move-column-right; }
+
+    // Consume/expel windows into/out of columns.
+    Mod+Ctrl+J { consume-window-into-column; }
+    Mod+Ctrl+K { expel-window-from-column; }
+    Mod+Ctrl+H { consume-or-expel-window-left; }
+    Mod+Ctrl+L { consume-or-expel-window-right; }
+
+    // Move column/workspace to another monitor.
+    Mod+Shift+Ctrl+H { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+J { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+K { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+L { move-column-to-monitor-right; }
+    Mod+Shift+D { move-workspace-down; }
+    Mod+Shift+U { move-workspace-up; }
+
+    // ── Workspaces (by name; see Workspaces section) ──
+    Mod+1 { focus-workspace "1"; }
+    Mod+2 { focus-workspace "2"; }
+    Mod+3 { focus-workspace "3"; }
+    Mod+4 { focus-workspace "4"; }
+    Mod+5 { focus-workspace "5"; }
+    Mod+6 { focus-workspace "6"; }
+    Mod+7 { focus-workspace "7"; }
+    Mod+8 { focus-workspace "8"; }
+    Mod+9 { focus-workspace "9"; }
+    Mod+Ctrl+1 { move-column-to-workspace "1"; }
+    Mod+Ctrl+2 { move-column-to-workspace "2"; }
+    Mod+Ctrl+3 { move-column-to-workspace "3"; }
+    Mod+Ctrl+4 { move-column-to-workspace "4"; }
+    Mod+Ctrl+5 { move-column-to-workspace "5"; }
+    Mod+Ctrl+6 { move-column-to-workspace "6"; }
+    Mod+Ctrl+7 { move-column-to-workspace "7"; }
+    Mod+Ctrl+8 { move-column-to-workspace "8"; }
+    Mod+Ctrl+9 { move-column-to-workspace "9"; }
+    Mod+Shift+1 { move-window-to-workspace "1"; }
+    Mod+Shift+2 { move-window-to-workspace "2"; }
+    Mod+Shift+3 { move-window-to-workspace "3"; }
+    Mod+Shift+4 { move-window-to-workspace "4"; }
+    Mod+Shift+5 { move-window-to-workspace "5"; }
+    Mod+Shift+6 { move-window-to-workspace "6"; }
+    Mod+Shift+7 { move-window-to-workspace "7"; }
+    Mod+Shift+8 { move-window-to-workspace "8"; }
+    Mod+Shift+9 { move-window-to-workspace "9"; }
+
+    // ── Sizes ──
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-column-width-back; }
+    Mod+E { switch-preset-window-height; }
+    Mod+Shift+E { reset-window-height; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+M { maximize-window-to-edges; }
+    Mod+C { center-column; }
+    Mod+Minus       { set-column-width "-10%"; }
+    Mod+Plus        { set-column-width "+10%"; }
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Plus  { set-window-height "+10%"; }
+
+    // ── Screenshots ──
+    Mod+S { screenshot; }
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    // ── Multimedia (allow-when-locked: work while session is locked) ──
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.025+ -l 1.0"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.025-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+2.5%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "2.5%-"; }
+
+    // ── Security and power ──
+    // Escape hatch: remote clients may request to inhibit shortcuts.
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    Mod+Shift+C { quit; }
+    Mod+Shift+P { power-off-monitors; }
+}

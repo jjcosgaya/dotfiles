@@ -1,0 +1,5 @@
+devcontainer
+ficheros de trabajo
+subirlo a git
+
+timeshift
