@@ -1,24 +1,24 @@
 # Dotfiles
 
-Configuración personal de openSUSE/Wayland, gestionada con
-[GNU Stow](https://www.gnu.org/software/stow/). Cada carpeta es un paquete y
-su estructura interna se reproduce en `~`.
+Personal openSUSE/Wayland configuration managed with
+[GNU Stow](https://www.gnu.org/software/stow/). Each directory is a package;
+its contents mirror the layout under `~`.
 
-## Paquetes
+## Packages
 
-| Paquete | Contenido |
+| Package | Contents |
 | --- | --- |
-| `bash`, `tmux`, `wezterm` | Shell, multiplexor y terminal |
-| `defaults` | Aplicaciones y variables de entorno predeterminadas |
-| `fuzzel`, `lsd`, `mako`, `waybar` | Escritorio y utilidades Wayland |
-| `gtk`, `niri`, `xdg-desktop-portal` | Tema y sesión gráfica |
-| `nvim`, `zathura` | Editor y lector PDF |
-| `gnupg`, `pass` | GPG, `pinentry-smart` y accesos rápidos para `pass` |
-| `pi` | Skills locales de Pi |
-| `wallpapers` | Fondo de pantalla |
-| `vimium`, `userscripts` | Configuración y scripts de navegador (instalación manual) |
+| `bash`, `tmux`, `wezterm` | Shell, multiplexer, and terminal |
+| `defaults` | Default applications and environment variables |
+| `fuzzel`, `lsd`, `mako`, `waybar` | Wayland desktop and utilities |
+| `gtk`, `niri`, `xdg-desktop-portal` | Theme and graphical session |
+| `nvim`, `zathura` | Editor and PDF reader |
+| `gnupg`, `pass` | GPG, `pinentry-smart`, and `pass` helpers |
+| `pi` | Local Pi skills |
+| `wallpapers` | Wallpaper |
+| `vimium`, `userscripts` | Browser configuration and scripts (manual installation) |
 
-## Instalación
+## Installation
 
 ```bash
 sudo zypper install stow
@@ -29,70 +29,70 @@ cd ~/.dotfiles
 stow */
 ```
 
-`stow */` enlaza todos los paquetes. Para probar sin modificar nada:
+`stow */` links every package. Preview the changes first with:
 
 ```bash
 stow -n -v */
 ```
 
-Operaciones habituales:
+Common operations:
 
 ```bash
-stow niri        # enlazar un paquete
-stow -R niri     # volver a enlazarlo
-stow -D niri     # desenlazarlo
+stow niri        # link one package
+stow -R niri     # relink it
+stow -D niri     # unlink it
 ```
 
-Los enlaces son simbólicos: editar `~/.config/...` o el archivo correspondiente
-en `~/.dotfiles` tiene el mismo efecto.
+The links are symbolic, so editing `~/.config/...` or the corresponding file in
+`~/.dotfiles` has the same effect.
 
-## Notas de paquetes
+## Package notes
 
-- `defaults` configura Brave para HTML y enlaces web, Neovim para texto/código,
-  Zathura para PDF y Thunar para carpetas. También define `EDITOR`, `VISUAL`,
-  `GIT_EDITOR`, `SUDO_EDITOR`, `BROWSER` y `TERMINAL`. Reinicia las aplicaciones
-  afectadas después de cambiar estas opciones; las variables gráficas suelen
-  requerir cerrar y volver a iniciar sesión.
-- `pass-fuzzel` se abre con `Mod+P` y copia contraseñas con `pass -c`. `Mod+U`
-  copia el usuario. Requiere `pass`, `fuzzel` y `wl-clipboard`.
-- `lock-screen` se abre con `Mod+Shift+O`, captura la pantalla enfocada de niri
-  y la usa temporalmente con `swaylock`. Requiere niri 26.04+, `swaylock` e
-  ImageMagick.
-- `mako` gestiona las notificaciones. Instálalo con `sudo zypper install mako`
-  y aplica cambios con `makoctl reload`.
-- `gnupg` usa `pinentry-curses` en terminal y `pinentry-gnome3` en aplicaciones
-  gráficas. En openSUSE: `sudo zypper install pinentry-gnome3`; después ejecuta
-  `gpgconf --reload gpg-agent` y abre un terminal nuevo.
-- No guardes aquí cachés, historiales, sesiones ni otras configuraciones que
-  cambien automáticamente.
+- `defaults` configures Brave for HTML and web links, Neovim for text/code,
+  Zathura for PDFs, and Thunar for folders. It also sets `EDITOR`, `VISUAL`,
+  `GIT_EDITOR`, `SUDO_EDITOR`, `BROWSER`, and `TERMINAL`. Restart affected
+  applications after changing these settings; graphical environment variables
+  usually require logging out and back in.
+- `pass-fuzzel` opens with `Mod+P` and copies passwords with `pass -c`.
+  `Mod+U` copies the username. Requires `pass`, `fuzzel`, and `wl-clipboard`.
+- `lock-screen` opens with `Mod+Shift+O`, captures the focused niri output,
+  dims and blurs it, and uses it temporarily with `swaylock`. Requires niri
+  26.04+, `swaylock`, and ImageMagick.
+- `mako` manages notifications. Install it with
+  `sudo zypper install mako`, then apply changes with `makoctl reload`.
+- `gnupg` uses `pinentry-curses` in terminals and `pinentry-gnome3` in graphical
+  applications. On openSUSE: `sudo zypper install pinentry-gnome3`, then run
+  `gpgconf --reload gpg-agent` and open a new terminal.
+- Do not store caches, histories, sessions, or other automatically changing
+  configuration here.
 
-## Vimium y userscript de YouTube
+## Vimium and YouTube userscript
 
-Estos paquetes incluyen archivos que no deben enlazarse con Stow; sus archivos
-`.stow-local-ignore` se encargan de ello.
+These packages contain files that should not be linked by Stow; their
+`.stow-local-ignore` files handle this.
 
-- **Vimium:** abre **Vimium → Options → Import/Export** y selecciona
+- **Vimium:** open **Vimium → Options → Import/Export** and select
   `vimium/vimium-options.json`.
-- **YouTube:** instala [Violentmonkey](https://violentmonkey.github.io/) o
-  Tampermonkey y pega `userscripts/youtube-speed-control.user.js` en un script
-  nuevo. Las flechas y la rueda cambian la velocidad en pasos de `0.1×`, el
-  botón central vuelve a `1×`, `Shift` usa pasos de `0.25×` y `[`/`]` también
-  funcionan como atajos. La velocidad se conserva entre vídeos.
+- **YouTube:** install [Violentmonkey](https://violentmonkey.github.io/) or
+  Tampermonkey and paste `userscripts/youtube-speed-control.user.js` into a new
+  script. The arrow keys and mouse wheel change speed in `0.1×` steps; the
+  middle button resets to `1×`; `Shift` uses `0.25×` steps; and `[`/`]` also
+  work as shortcuts. The selected speed persists between videos.
 
-Después de actualizar el script, guárdalo y recarga YouTube completamente. En
-Wayland se puede copiar con:
+After updating the script, save it and fully reload YouTube. On Wayland, copy
+it to the clipboard with:
 
 ```bash
 wl-copy < userscripts/youtube-speed-control.user.js
 ```
 
-## Tema, iconos y cursores
+## Theme, icons, and cursors
 
-`desktop-assets.tar.gz` contiene el tema **Graphite-Dark** (paleta Kanagawa),
-los iconos **FairyWren**, los cursores **Bibata Modern Ice**, un `INSTALL.md` y
-el parche para reconstruir el tema desde su fuente.
+`desktop-assets.tar.gz` contains the **Graphite-Dark** theme (Kanagawa palette),
+**FairyWren** icons, **Bibata Modern Ice** cursors, an `INSTALL.md`, and the
+patch used to rebuild the theme from source.
 
-Para instalar los assets empaquetados:
+Install the bundled assets with:
 
 ```bash
 mkdir -p /tmp/assets ~/.local/share/themes ~/.local/share/icons ~/.icons
@@ -106,29 +106,28 @@ gtk-update-icon-cache ~/.icons/FairyWren
 rm -rf /tmp/assets
 ```
 
-El enlace del cursor en `~/.icons` es necesario para que niri lo encuentre.
-Para cambiar el color de las carpetas:
+The cursor link in `~/.icons` is required for niri to find it. Change the
+folder color with:
 
 ```bash
 ln -sfn <color> ~/.icons/FairyWren/places/colours/default
 gtk-update-icon-cache ~/.icons/FairyWren
 ```
 
-Los colores disponibles se pueden consultar con:
+Available colors can be listed with:
 
 ```bash
 ls ~/.icons/FairyWren/places/colours/
 ```
 
-Para reconstruir el tema GTK desde el fuente, consulta el `INSTALL.md` del
-archivo; requiere `sassc`. El parche incluido conserva el fondo oscuro
-**Kanagawa dragon** y corrige el texto de sidebars, Thunar y aceleradores de
-menús GTK3.
+For rebuilding the GTK theme from source, see the archive's `INSTALL.md`;
+`sassc` is required. The included patch preserves the dark **Kanagawa dragon**
+background and fixes text in sidebars, Thunar, and GTK3 menu accelerators.
 
-## Añadir un paquete
+## Adding a package
 
 ```bash
-mkdir -p ~/.dotfiles/miapp/.config
-mv ~/.config/miapp ~/.dotfiles/miapp/.config/
-cd ~/.dotfiles && stow miapp
+mkdir -p ~/.dotfiles/myapp/.config
+mv ~/.config/myapp ~/.dotfiles/myapp/.config/
+cd ~/.dotfiles && stow myapp
 ```
