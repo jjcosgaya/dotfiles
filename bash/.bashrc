@@ -55,6 +55,10 @@ alias suspend-then-hibernate='systemctl suspend-then-hibernate'
 
 set -o vi
 
+# Keep multiline pastes in readline instead of feeding later commands to an
+# interactive prompt such as sudo's password reader.
+bind 'set enable-bracketed-paste on'
+
 # GnuPG: use the terminal pinentry from interactive shells. The graphical
 # password launcher overrides this with PINENTRY_USER_DATA=gui.
 if [[ -t 1 ]]; then

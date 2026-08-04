@@ -1,0 +1,14 @@
+[terminal]
+# The VT to run the greeter on. Can be "next", "current" or a number
+# designating the VT.
+vt = next
+
+# The default session, also known as the greeter.
+[default_session]
+
+# Wrapper script that reprograms the VT palette to Kanagawa Dragon and
+# starts tuigreet with ANSI color names (the VT cannot render raw hex).
+command = "/etc/greetd/tuigreet-kanagawa.sh"
+
+# The user to run the greeter as.
+user = "greeter"

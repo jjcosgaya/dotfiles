@@ -13,18 +13,29 @@ config.font = wezterm.font_with_fallback({
 config.font_size = 13
 config.color_scheme = 'Kanagawa Dragon (Gogh)'
 
-config.window_background_opacity = 0.9
+config.window_background_opacity = 0.95
 
 config.enable_tab_bar = false
 
--- Use wl-paste directly; send_paste preserves bracketed paste.
+-- Read the clipboard directly and normalize it before sending a bracketed
+-- paste. Bash enables bracketed-paste mode in bash/.bashrc; WezTerm does not
+-- rewrite newlines while that mode is active.
 local function paste_wayland(_, pane)
     local ok, text, err = wezterm.run_child_process({ 'wl-paste', '--no-newline' })
-    if ok then
-        pane:send_paste(text)
-    else
+    if not ok then
         wezterm.log_error('wl-paste failed: ' .. tostring(err or 'unknown error'))
+        return
     end
+
+    -- Keep commands on separate lines even when the source uses CRLF, and
+    -- terminate a multiline command block if the clipboard omitted its final
+    -- newline.
+    text = text:gsub('\r\n', '\n'):gsub('\r', '\n')
+    if text:find('\n', 1, true) and text:sub(-1) ~= '\n' then
+        text = text .. '\n'
+    end
+
+    pane:send_paste(text)
 end
 
 config.keys = {

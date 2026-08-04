@@ -17,7 +17,9 @@ its contents mirror the layout under `~`.
 | `gnupg`, `pass` | GPG, `pinentry-smart`, and `pass` helpers |
 | `pi` | Local Pi skills |
 | `wallpapers` | Wallpaper |
-| `vimium`, `userscripts` | Browser configuration and scripts (manual installation) |
+| [`vimium`](vimium/README.md), [`userscripts`](userscripts/README.md) | Browser configuration and scripts |
+| [`icons`](icons/README.md) | Themes, icons, and cursors (manual installation) |
+| [`greetd`](greetd/README.md) | Display manager greeter and Kanagawa Dragon theme (manual installation) |
 
 ## Installation
 
@@ -96,63 +98,14 @@ The links are symbolic, so editing `~/.config/...` or the corresponding file in
 - Do not store caches, histories, sessions, or other automatically changing
   configuration here.
 
-## Vimium and YouTube userscript
+## Manual packages
 
-These packages contain files that should not be linked by Stow; their
-`.stow-local-ignore` files handle this.
+These packages are ignored by Stow and installed manually:
 
-- **Vimium:** open **Vimium → Options → Import/Export** and select
-  `vimium/vimium-options.json`.
-- **YouTube:** install [Violentmonkey](https://violentmonkey.github.io/) or
-  Tampermonkey and paste `userscripts/youtube-speed-control.user.js` into a new
-  script. The arrow keys and mouse wheel change speed in `0.1×` steps; the
-  middle button resets to `1×`; `Shift` uses `0.25×` steps; and `[`/`]` also
-  work as shortcuts. The selected speed persists between videos.
-
-After updating the script, save it and fully reload YouTube. On Wayland, copy
-it to the clipboard with:
-
-```bash
-wl-copy < userscripts/youtube-speed-control.user.js
-```
-
-## Theme, icons, and cursors
-
-`desktop-assets.tar.gz` contains the **Graphite-Dark** theme (Kanagawa palette),
-**FairyWren** icons, **Bibata Modern Ice** cursors, an `INSTALL.md`, and the
-patch used to rebuild the theme from source.
-
-Install the bundled assets with:
-
-```bash
-mkdir -p /tmp/assets ~/.local/share/themes ~/.local/share/icons ~/.icons
-tar -xzf desktop-assets.tar.gz -C /tmp/assets
-
-cp -r /tmp/assets/theme/Graphite-Dark ~/.local/share/themes/
-cp -r /tmp/assets/icons/FairyWren ~/.icons/
-cp -r /tmp/assets/cursor/Bibata-Modern-Ice ~/.local/share/icons/
-ln -sfn ~/.local/share/icons/Bibata-Modern-Ice ~/.icons/Bibata-Modern-Ice
-gtk-update-icon-cache ~/.icons/FairyWren
-rm -rf /tmp/assets
-```
-
-The cursor link in `~/.icons` is required for niri to find it. Change the
-folder color with:
-
-```bash
-ln -sfn <color> ~/.icons/FairyWren/places/colours/default
-gtk-update-icon-cache ~/.icons/FairyWren
-```
-
-Available colors can be listed with:
-
-```bash
-ls ~/.icons/FairyWren/places/colours/
-```
-
-For rebuilding the GTK theme from source, see the archive's `INSTALL.md`;
-`sassc` is required. The included patch preserves the dark **Kanagawa dragon**
-background and fixes text in sidebars, Thunar, and GTK3 menu accelerators.
+- [Vimium](vimium/README.md)
+- [YouTube userscript](userscripts/README.md)
+- [Themes, icons, and cursors](icons/README.md)
+- [greetd + tuigreet](greetd/README.md)
 
 ## Adding a package
 
