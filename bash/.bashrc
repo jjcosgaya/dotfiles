@@ -38,7 +38,9 @@ deduplicate_history() {
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fcd='dir=$(FZF_DEFAULT_COMMAND="fd . ~ --no-ignore --type d 2>/dev/null" fzf) && cd "$dir"'
+
+eval "$(zoxide init bash)"
+alias fcd='dir=$(FZF_DEFAULT_COMMAND="fd . ~ --no-ignore --type d 2>/dev/null" fzf) && z "$dir"'
 alias fpdf='pdf=$(FZF_DEFAULT_COMMAND="fd . ~ -e pdf -t f --no-ignore 2>/dev/null" fzf --preview="pdftotext {} - | head -50") && (zathura "$pdf" &)'
 
 # Systemd power controls (polkit authorizes active local sessions without sudo).

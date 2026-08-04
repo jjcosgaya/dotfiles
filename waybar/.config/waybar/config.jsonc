@@ -4,7 +4,7 @@
     // Choose the order of the modules
     "modules-left": ["niri/workspaces", "tray"],
     "modules-center": ["niri/window"],
-    "modules-right": ["network", "custom/zypper", "cpu", "memory", "temperature", "backlight", "battery", "pulseaudio", "clock", "niri/language"],
+    "modules-right": ["network", "custom/zypper", "cpu", "memory", "temperature", "backlight", "battery", "custom/power-profile", "pulseaudio", "clock", "niri/language"],
 
     // ──── Workspaces & window ─────────────────────────────────────
     "niri/workspaces": {
@@ -36,6 +36,17 @@
         "exec": "zypper lu | grep 'v \\+|' | wc -l; echo 'packages to update'",
         "on-click": "exec wezterm -e sudo sh -c 'zypper ref; zypper dup; pkill -SIGRTMIN+8 waybar'",
         "signal": 8
+    },
+    "custom/power-profile": {
+        "exec": "power-profile status",
+        "return-type": "json",
+        "interval": 10,
+        "on-click": "power-profile next",
+        "on-click-middle": "power-profile set balanced",
+        "on-click-right": "power-profile set power-saver",
+        "on-scroll-up": "power-profile next",
+        "on-scroll-down": "power-profile previous",
+        "signal": 9
     },
 
     // ──── Tray ────────────────────────────────────────────────────

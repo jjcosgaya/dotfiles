@@ -195,6 +195,7 @@ binds {
     Mod+P repeat=false hotkey-overlay-title="Copy Password: pass-fuzzel" { spawn "pass-fuzzel"; }
     Mod+U repeat=false hotkey-overlay-title="Copy Username: pass-fuzzel" { spawn "pass-fuzzel" "--username"; }
     Mod+B repeat=false hotkey-overlay-title="Open the Browser: Brave" { spawn "brave-browser"; }
+    Mod+Ctrl+P repeat=false hotkey-overlay-title="Cycle Power Profile" { spawn "power-profile" "next"; }
     Mod+Shift+O hotkey-overlay-title="Lock the Screen: blurred screenshot" { spawn "lock-screen"; }
 
     // ── Windows ──

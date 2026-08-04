@@ -91,6 +91,7 @@ window#waybar.solo {
 #pulseaudio,
 #temperature,
 #backlight,
+#custom-power-profile,
 #language,
 #clock {
     margin: 0px 6px 0px 10px;
@@ -106,4 +107,21 @@ window#waybar.solo {
 
 #battery.charging {
     color: #87a987;
+}
+
+#custom-power-profile.power-saver {
+    color: #87a987;
+}
+
+#custom-power-profile.balanced {
+    color: #c8c093;
+}
+
+#custom-power-profile.performance {
+    color: #e46876;
+}
+
+#custom-power-profile.unavailable,
+#custom-power-profile.unknown {
+    color: #a6a69c;
 }

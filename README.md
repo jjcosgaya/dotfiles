@@ -11,6 +11,7 @@ its contents mirror the layout under `~`.
 | `bash`, `tmux`, `wezterm` | Shell, multiplexer, and terminal |
 | `defaults` | Default applications and environment variables |
 | `fuzzel`, `lsd`, `mako`, `waybar` | Wayland desktop and utilities |
+| `power` | `power-profiles-daemon` helper and desktop controls |
 | `gtk`, `niri`, `xdg-desktop-portal` | Theme and graphical session |
 | `nvim`, `zathura` | Editor and PDF reader |
 | `gnupg`, `pass` | GPG, `pinentry-smart`, and `pass` helpers |
@@ -60,6 +61,35 @@ The links are symbolic, so editing `~/.config/...` or the corresponding file in
   26.04+, `swaylock`, and ImageMagick.
 - `mako` manages notifications. Install it with
   `sudo zypper install mako`, then apply changes with `makoctl reload`.
+- `power` provides the `power-profile` helper used by Waybar and niri. On
+  this AMD laptop, use the native `power-profiles-daemon` service rather than
+  stacking multiple power-management daemons:
+  ```bash
+  sudo zypper install power-profiles-daemon
+  sudo systemctl unmask power-profiles-daemon.service
+  sudo systemctl enable --now power-profiles-daemon.service
+  ```
+  Keep `tlp.service` and `tuned.service` stopped when using it. Check the
+  available profiles and current profile with `powerprofilesctl list` and
+  `powerprofilesctl get`. Waybar left-click/scroll cycles profiles, middle
+  click selects `balanced`, right-click selects `power-saver`, and
+  `Mod+Ctrl+P` cycles them from niri. Use
+  `powerprofilesctl launch --profile performance -- <command>` for a
+  one-off performance-sensitive command instead of leaving the whole system
+  in performance mode.
+
+  The AMD P-State driver is already active on this machine, so the daemon can
+  control both CPU energy/performance preference and the ASUS platform profile.
+  The optional AMD panel-saving action trades color accuracy for battery life;
+  inspect it with `powerprofilesctl list-actions` and enable it only if that
+  trade-off is acceptable:
+  ```bash
+  powerprofilesctl configure-action amdgpu_panel_power --enable
+  ```
+  The firmware already exposes a 75–80% battery charge threshold here, so no
+  additional TLP or ASUS charge-limit setup is needed. TLP remains a possible
+  alternative for fine-grained device policies, but it must not run alongside
+  `power-profiles-daemon`.
 - `gnupg` uses `pinentry-curses` in terminals and `pinentry-gnome3` in graphical
   applications. On openSUSE: `sudo zypper install pinentry-gnome3`, then run
   `gpgconf --reload gpg-agent` and open a new terminal.

@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+# Show or change the power-profiles-daemon profile.
+# The status command emits Waybar-compatible JSON; the other commands are
+# useful from niri keybindings and a terminal.
+set -euo pipefail
+
+ctl=${POWERPROFILECTL:-powerprofilesctl}
+
+render_unavailable() {
+    printf '%s\n' '{"text":" Power","class":"unavailable","tooltip":"power-profiles-daemon is unavailable"}'
+}
+
+render_profile() {
+    local profile=${1:-}
+    local text class tooltip
+
+    case "$profile" in
+        power-saver)
+            text=' Saver'
+            class='power-saver'
+            tooltip='Power saver profile — left-click to cycle; middle-click for balanced'
+            ;;
+        balanced)
+            text=' Balanced'
+            class='balanced'
+            tooltip='Balanced profile — left-click to cycle; right-click for power saver'
+            ;;
+        performance)
+            text=' Performance'
+            class='performance'
+            tooltip='Performance profile — left-click to cycle; right-click for power saver'
+            ;;
+        *)
+            text=' Power'
+            class='unknown'
+            tooltip='Unknown power profile'
+            ;;
+    esac
+
+    printf '{"text":"%s","class":"%s","tooltip":"%s"}\n' \
+        "$text" "$class" "$tooltip"
+}
+
+require_ctl() {
+    command -v "$ctl" >/dev/null 2>&1
+}
+
+get_profile() {
+    "$ctl" get 2>/dev/null | awk 'NF { print $1; exit }'
+}
+
+refresh_waybar() {
+    # Signal only this module when a click or keybinding changes the profile.
+    command -v pkill >/dev/null 2>&1 || return 0
+    pkill -RTMIN+9 -x waybar >/dev/null 2>&1 || true
+}
+
+available_profiles() {
+    local listing profile
+    listing=$("$ctl" list 2>/dev/null || true)
+
+    # Keep a predictable cycle order instead of relying on daemon output order.
+    for profile in balanced power-saver performance; do
+        if printf '%s\n' "$listing" |
+            grep -Eq "^[[:space:]]*\\*?[[:space:]]*${profile}:"; then
+            printf '%s\n' "$profile"
+        fi
+    done
+}
+
+status() {
+    if ! require_ctl; then
+        render_unavailable
+        return 0
+    fi
+
+    local profile
+    profile=$(get_profile || true)
+    if [[ -n "$profile" ]]; then
+        render_profile "$profile"
+    else
+        render_unavailable
+    fi
+}
+
+set_profile() {
+    if ! require_ctl; then
+        printf '%s\n' \
+            'powerprofilesctl is not installed; install power-profiles-daemon first.' >&2
+        return 127
+    fi
+
+    local profile=${1:-}
+    case "$profile" in
+        balanced|power-saver|performance) ;;
+        *)
+            printf 'Unknown power profile: %s\n' "$profile" >&2
+            return 2
+            ;;
+    esac
+
+    "$ctl" set "$profile"
+    refresh_waybar
+}
+
+cycle() {
+    if ! require_ctl; then
+        printf '%s\n' \
+            'powerprofilesctl is not installed; install power-profiles-daemon first.' >&2
+        return 127
+    fi
+
+    local direction=${1:-next}
+    local current profile
+    current=$(get_profile || true)
+
+    mapfile -t profiles < <(available_profiles)
+    if ((${#profiles[@]} == 0)); then
+        # Both profiles are required by the daemon, so this is also a useful
+        # fallback if an older daemon formats `list` differently.
+        profiles=(balanced power-saver)
+    fi
+
+    # Preserve a valid current profile if the daemon's list output was unusual.
+    case "$current" in
+        balanced|power-saver|performance)
+            for profile in "${profiles[@]}"; do
+                [[ "$profile" == "$current" ]] && break
+            done
+            if [[ "${profile:-}" != "$current" ]]; then
+                profiles+=("$current")
+            fi
+            ;;
+    esac
+
+    local index=-1 i
+    for i in "${!profiles[@]}"; do
+        if [[ "${profiles[$i]}" == "$current" ]]; then
+            index=$i
+            break
+        fi
+    done
+
+    if ((index < 0)); then
+        if [[ "$direction" == previous ]]; then
+            index=$((${#profiles[@]} - 1))
+        else
+            index=0
+        fi
+    elif [[ "$direction" == previous ]]; then
+        index=$(((index - 1 + ${#profiles[@]}) % ${#profiles[@]}))
+    else
+        index=$(((index + 1) % ${#profiles[@]}))
+    fi
+
+    set_profile "${profiles[$index]}"
+}
+
+case "${1:-status}" in
+    status|get)
+        status
+        ;;
+    next)
+        cycle next
+        ;;
+    previous|prev)
+        cycle previous
+        ;;
+    set)
+        if (($# != 2)); then
+            printf 'Usage: power-profile set {balanced|power-saver|performance}\n' >&2
+            exit 2
+        fi
+        set_profile "$2"
+        ;;
+    *)
+        printf 'Usage: power-profile {status|next|previous|set PROFILE}\n' >&2
+        exit 2
+        ;;
+esac
