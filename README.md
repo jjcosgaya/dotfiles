@@ -11,6 +11,7 @@ its contents mirror the layout under `~`.
 | `bash`, `tmux`, `wezterm` | Shell, multiplexer, and terminal |
 | `defaults` | Default applications and environment variables |
 | `fuzzel`, `lsd`, `mako`, `waybar` | Wayland desktop and utilities |
+| [`handy`](handy/README.md) | Handy speech-to-text desktop entry and Wayland shortcut setup |
 | `power` | `power-profiles-daemon` helper and desktop controls |
 | `gtk`, `niri`, `xdg-desktop-portal` | Theme and graphical session |
 | `nvim`, `zathura` | Editor and PDF reader |
@@ -56,6 +57,22 @@ The links are symbolic, so editing `~/.config/...` or the corresponding file in
   `GIT_EDITOR`, `SUDO_EDITOR`, `BROWSER`, and `TERMINAL`. Restart affected
   applications after changing these settings; graphical environment variables
   usually require logging out and back in.
+- `handy` installs a desktop entry so Fuzzel can launch Handy, the offline
+  speech-to-text AppImage installed in `~/.local/bin`. Download the Linux
+  AppImage from [Handy's releases](https://github.com/cjpais/Handy/releases),
+  then install it and stow the package:
+  ```bash
+  mkdir -p ~/.local/bin
+  cp ~/Downloads/Handy*.AppImage ~/.local/bin/handy
+  chmod +x ~/.local/bin/handy
+  cd ~/.dotfiles && stow handy
+  ```
+  On Wayland, Handy also needs `wtype` (or `dotool`) to insert transcribed text;
+  on openSUSE, install the preferred tool with `sudo zypper install wtype`. The
+  package also installs [Handy's upstream 256×256 icon](https://github.com/cjpais/Handy/blob/main/src-tauri/icons/128x128%402x.png) for the launcher.
+  Tauri global shortcuts do not work reliably on Wayland. See the
+  [Handy package instructions](handy/README.md) to enable the evdev-based
+  Handy Keys backend for `Ctrl+Space` push-to-talk and to revert it safely.
 - `pass-fuzzel` opens with `Mod+P` and copies passwords with `pass -c`.
   `Mod+U` copies the username. Requires `pass`, `fuzzel`, and `wl-clipboard`.
 - `lock-screen` opens with `Mod+Shift+O`, captures the focused niri output,

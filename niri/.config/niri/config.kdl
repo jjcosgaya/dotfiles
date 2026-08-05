@@ -197,6 +197,9 @@ binds {
     Mod+B repeat=false hotkey-overlay-title="Open the Browser: Brave" { spawn "brave-browser"; }
     Mod+Ctrl+P repeat=false hotkey-overlay-title="Cycle Power Profile" { spawn "power-profile" "next"; }
     Mod+Shift+O hotkey-overlay-title="Lock the Screen: blurred screenshot" { spawn "lock-screen"; }
+    // Handy uses Ctrl+Space for push-to-talk; Mod+Space remains available for
+    // toggle mode.
+    Mod+Space repeat=false hotkey-overlay-title="Toggle Handy Transcription" { spawn "handy" "--toggle-transcription"; }
 
     // ── Windows ──
     Mod+Shift+Q repeat=false { close-window; }
