@@ -73,5 +73,15 @@ bind -m vi-command '"j": history-search-forward'
 bind -m vi-insert '"\e[A": history-search-backward'
 bind -m vi-insert '"\e[B": history-search-forward'
 
+# Change to the directory Yazi exits from.
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
 # pfetch
 . "$HOME/.cargo/env"
