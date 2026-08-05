@@ -95,6 +95,15 @@ The links are symbolic, so editing `~/.config/...` or the corresponding file in
 - `gnupg` uses `pinentry-curses` in terminals and `pinentry-gnome3` in graphical
   applications. On openSUSE: `sudo zypper install pinentry-gnome3`, then run
   `gpgconf --reload gpg-agent` and open a new terminal.
+- **Brave “login keyring” popup:** niri is launched by `greetd`, so GNOME Keyring
+  is not unlocked automatically unless `greetd` is included in PAM. With
+  `gnome-keyring-pam` installed, run:
+  ```bash
+  sudo /usr/sbin/pam-config --add \
+    --gnome_keyring-only_if=gdm,gdm-password,lxdm,lightdm,mdm,sddm,login,greetd
+  ```
+  Then log out and back in. The existing `login` entry covers console logins;
+  `greetd` is needed for this graphical session.
 - Do not store caches, histories, sessions, or other automatically changing
   configuration here.
 
