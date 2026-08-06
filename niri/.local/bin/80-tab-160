@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+# Mantener una única conexión virtual evita perder la tecla Tab entre procesos.
+# Secuencia: 80, Tab, 160.
+/usr/bin/wtype '80' -s 30 -P Tab -s 30 -p Tab -s 30 '160'

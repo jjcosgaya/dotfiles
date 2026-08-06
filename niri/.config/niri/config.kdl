@@ -1,5 +1,7 @@
 // niri config (KDL). Wiki: https://niri-wm.github.io/niri/
 // Reload with Mod+Shift+F5, no session restart needed.
+// Optional, easily removable macros:
+include optional=true "keybinds/80-tab-160.kdl"
 
 // ──── Input ─────────────────────────────────────────────────────
 input {

@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+base="$HOME/.config/niri/keybinds"
+enabled="$base/80-tab-160.kdl"
+disabled="$base/80-tab-160.kdl.disabled"
+
+if [ -e "$enabled" ]; then
+    mv "$enabled" "$disabled"
+    printf '%s\n' 'Macro 80-Tab-160 desactivada.'
+else
+    mv "$disabled" "$enabled"
+    printf '%s\n' 'Macro 80-Tab-160 activada (Mod+Shift+M).'
+fi
+
+# Aplicar el cambio sin reiniciar niri.
+niri msg action load-config-file

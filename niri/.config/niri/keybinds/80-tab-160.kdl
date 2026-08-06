@@ -1,0 +1,6 @@
+// Macro temporal: Mod+Shift+M escribe 80, pulsa Tab y escribe 160.
+binds {
+    Mod+Shift+M repeat=false hotkey-overlay-title="Escribir 80, Tab, 160" {
+        spawn "/home/jota/.local/bin/80-tab-160"
+    }
+}
