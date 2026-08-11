@@ -1,5 +1,50 @@
 [theme]
-name = "gruvbox"
+# Custom Kanagawa Dragon theme, based on the colors used by tuigreet and the
+# rest of the desktop. Built-in "kanagawa" is used as a fallback base, then
+# every token is overridden with the Dragon palette.
+name = "kanagawa"
 auto_switch = false
+
+[theme.custom]
+# Dragon dark surfaces
+panel_bg = "#181616"
+surface0 = "#1D1C19"
+surface1 = "#282727"
+surface_dim = "#625e5a"
+overlay0 = "#393836"
+overlay1 = "#625e5a"
+
+# Dragon foregrounds
+text = "#c5c9c5"
+subtext0 = "#a6a69c"
+
+# Dragon accent colors
+accent = "#8ba4b0"
+mauve = "#a292a3"
+green = "#87a987"
+yellow = "#c4b28a"
+red = "#c4746e"
+blue = "#8ba4b0"
+teal = "#8ea4a2"
+peach = "#b6927b"
+
 [ui]
+show_agent_labels_on_pane_borders = true
+
+sidebar_collapsed_mode = "hidden"
+sidebar_start_collapsed = true
+
+# Ahorrar espacio
+hide_tab_bar_when_single_tab = true
+pane_scrollbars = false
+pane_gaps = false
+
+# Sin prompts
 prompt_new_tab_name = false
+confirm_close = false
+
+# Ratón libre para URLs
+mouse_capture = false
+
+[ui.toast]
+delivery = "herdr"
