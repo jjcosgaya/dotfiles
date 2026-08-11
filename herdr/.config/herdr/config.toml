@@ -1,32 +1,14 @@
 [theme]
-# Custom Kanagawa Dragon theme, based on the colors used by tuigreet and the
-# rest of the desktop. Built-in "kanagawa" is used as a fallback base, then
-# every token is overridden with the Dragon palette.
-name = "kanagawa"
+name = "vesper"
 auto_switch = false
 
 [theme.custom]
-# Dragon dark surfaces
-panel_bg = "#181616"
-surface0 = "#1D1C19"
-surface1 = "#282727"
-surface_dim = "#625e5a"
-overlay0 = "#393836"
-overlay1 = "#625e5a"
+panel_bg = "reset"
+surface0 = "reset"
+# surface_dim = "reset"
 
-# Dragon foregrounds
-text = "#c5c9c5"
-subtext0 = "#a6a69c"
-
-# Dragon accent colors
-accent = "#8ba4b0"
-mauve = "#a292a3"
-green = "#87a987"
-yellow = "#c4b28a"
-red = "#c4746e"
-blue = "#8ba4b0"
-teal = "#8ea4a2"
-peach = "#b6927b"
+# overlay0 = "#ff0000"
+# accent = "reset"
 
 [ui]
 show_agent_labels_on_pane_borders = true
@@ -37,7 +19,7 @@ sidebar_start_collapsed = true
 # Ahorrar espacio
 hide_tab_bar_when_single_tab = true
 pane_scrollbars = false
-pane_gaps = false
+pane_gaps = true
 
 # Sin prompts
 prompt_new_tab_name = false
@@ -48,3 +30,30 @@ mouse_capture = false
 
 [ui.toast]
 delivery = "herdr"
+
+[keys]
+# Keep Herdr's defaults and add direct aliases.
+previous_tab = ["prefix+p", "alt+p"]
+next_tab = ["prefix+n", "alt+n"]
+
+
+# Keep the default copy-mode binding and add prefix+y.
+copy_mode = ["prefix+[", "prefix+y"]
+
+# Directly switch to workspaces 1 through 9.
+switch_workspace = "alt+1..9"
+
+# Toggle the focused pane between normal and zoomed view.
+zoom = ["prefix+z", "alt+f"]
+
+# Keep prefix+h/j/k/l and add direct Alt aliases for pane movement.
+focus_pane_left = ["prefix+h", "alt+h"]
+focus_pane_down = ["prefix+j", "alt+j"]
+focus_pane_up = ["prefix+k", "alt+k"]
+focus_pane_right = ["prefix+l", "alt+l"]
+
+# Swap the active pane with its neighbor, preserving the default prefix keys.
+swap_pane_left = ["prefix+shift+h", "alt+shift+h"]
+swap_pane_down = ["prefix+shift+j", "alt+shift+j"]
+swap_pane_up = ["prefix+shift+k", "alt+shift+k"]
+swap_pane_right = ["prefix+shift+l", "alt+shift+l"]
