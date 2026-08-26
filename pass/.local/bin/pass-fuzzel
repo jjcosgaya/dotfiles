@@ -19,10 +19,9 @@ case "${1:-}" in
 esac
 
 command -v fuzzel >/dev/null || exit 1
+command -v pass >/dev/null || exit 1
 if [[ "$mode" == username ]]; then
     command -v wl-copy >/dev/null || exit 1
-else
-    command -v pass >/dev/null || exit 1
 fi
 [[ -d "$store" ]] || exit 0
 
@@ -44,8 +43,16 @@ entry=$(printf '%s\n' "$entries" |
 [[ -n "$entry" ]] || exit 0
 
 if [[ "$mode" == username ]]; then
-    # Entries are expected to look like: folder/.../url/username.gpg
-    printf '%s' "${entry##*/}" | wl-copy --type text/plain
+    username=$(
+        PINENTRY_USER_DATA=gui pass show -- "$entry" |
+            awk '!found && /^username:[[:space:]]*/ {
+                sub(/^username:[[:space:]]*/, "")
+                print
+                found = 1
+            }'
+    )
+    [[ -n "$username" ]] || exit 0
+    printf '%s' "$username" | wl-copy --type text/plain
 else
     # Let pass handle clipboard integration and timed clearing. Explicitly
     # select the graphical pinentry even if Niri was started from a terminal.
